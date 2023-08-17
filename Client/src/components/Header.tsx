@@ -1,0 +1,18 @@
+import Button from './ButtonNavLK'
+import Logo from './Logo'
+import '../assets/styles/components/HeaderStyle.css'
+
+export default function Header() {
+    return (
+        <header className='header'>
+            <>
+                <Logo path='/'></Logo>
+                <div className='header_register'>  
+                    <Button path='/account' text='Account'></Button>
+                    <Button path='/login' text='Login'></Button>
+                    <Button path='/register' text='Register'></Button>
+                </div>
+            </>
+        </header>
+    )
+}

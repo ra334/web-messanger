@@ -1,0 +1,12 @@
+.mainpage_container {
+    height: 100vh;
+    display: grid;
+    grid-template-rows: 50px auto 50px;
+    grid-gap: 10px;
+}
+
+.box {
+    display: grid;
+    grid-template-columns: 200px auto;
+    grid-gap: 10px;
+}
