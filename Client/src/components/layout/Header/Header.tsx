@@ -1,6 +1,6 @@
-import Button from './ButtonNavLK'
-import Logo from './Logo'
-import '../assets/styles/components/HeaderStyle.css'
+import Button from '../../ui/Button/ButtonNavLK'
+import Logo from '../../ui/Logo/Logo'
+import './HeaderStyle.css'
 
 export default function Header() {
     return (

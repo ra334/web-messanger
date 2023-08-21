@@ -4,10 +4,10 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import './index.css'
 import 'normalize.css';
 
-import MainPage from './Pages/MainPage'
-import AccountPage from './Pages/AccountPage'
-import RegisterPage from './Pages/RegisterPage'
-import LoginPage from './Pages/LoginPage'
+import MainPage from './pages/Main/MainPage'
+import AccountPage from './pages/Account/AccountPage'
+import RegisterPage from './pages/Register/RegisterPage'
+import LoginPage from './pages/Login/LoginPage'
 
 
 const router = createBrowserRouter([

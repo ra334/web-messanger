@@ -1,0 +1,108 @@
+{
+  "messages": {
+    "mom": [
+      {
+        "id": 1,
+        "text": "Hi",
+        "timestamp": "2023-08-21T10:00:00"
+      },
+      {
+        "id": 2,
+        "text": "How are you?",
+        "timestamp": "2023-08-21T10:30:00"
+      },
+      {
+        "id": 3,
+        "text": "Don't forget to pick up some groceries on your way home.",
+        "timestamp": "2023-08-21T12:15:00"
+      },
+      {
+        "id": 4,
+        "text": "Did you call your sister yet?",
+        "timestamp": "2023-08-21T14:05:00"
+      },
+      {
+        "id": 5,
+        "text": "I'm making your favorite dinner tonight!",
+        "timestamp": "2023-08-21T18:45:00"
+      },
+      {
+        "id": 6,
+        "text": "Remember to water the plants.",
+        "timestamp": "2023-08-21T19:30:00"
+      },
+      {
+        "id": 7,
+        "text": "Goodnight, sweetie. Sleep well.",
+        "timestamp": "2023-08-21T21:00:00"
+      },
+      {
+        "id": 8,
+        "text": "Did you get the mail today?",
+        "timestamp": "2023-08-21T21:30:00"
+      },
+      {
+        "id": 9,
+        "text": "How's your day going?",
+        "timestamp": "2023-08-21T22:15:00"
+      },
+      {
+        "id": 10,
+        "text": "I love you!",
+        "timestamp": "2023-08-21T23:00:00"
+      }
+    ],
+    "user": [
+      {
+        "id": 1,
+        "text": "Hi",
+        "timestamp": "2023-08-21T10:05:00"
+      },
+      {
+        "id": 2,
+        "text": "I'm fine",
+        "timestamp": "2023-08-21T10:35:00"
+      },
+      {
+        "id": 3,
+        "text": "Thanks for the reminder. I'll grab groceries.",
+        "timestamp": "2023-08-21T12:30:00"
+      },
+      {
+        "id": 4,
+        "text": "I'll call her after work.",
+        "timestamp": "2023-08-21T14:15:00"
+      },
+      {
+        "id": 5,
+        "text": "Can't wait for dinner!",
+        "timestamp": "2023-08-21T19:00:00"
+      },
+      {
+        "id": 6,
+        "text": "I watered the plants this morning.",
+        "timestamp": "2023-08-21T19:45:00"
+      },
+      {
+        "id": 7,
+        "text": "Goodnight, Mom. Sleep well too.",
+        "timestamp": "2023-08-21T21:15:00"
+      },
+      {
+        "id": 8,
+        "text": "Yes, got the mail. Nothing important.",
+        "timestamp": "2023-08-21T21:45:00"
+      },
+      {
+        "id": 9,
+        "text": "It's been a busy day, but good!",
+        "timestamp": "2023-08-21T22:30:00"
+      },
+      {
+        "id": 10,
+        "text": "Love you too!",
+        "timestamp": "2023-08-21T23:15:00"
+      }
+    ]
+  }
+}

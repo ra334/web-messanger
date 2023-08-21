@@ -1,0 +1,108 @@
+{
+  "messages": {
+    "dad": [
+      {
+        "id": 1,
+        "text": "Hey there!",
+        "timestamp": "2023-08-21T08:30:00"
+      },
+      {
+        "id": 2,
+        "text": "How's your day going?",
+        "timestamp": "2023-08-21T12:15:00"
+      },
+      {
+        "id": 3,
+        "text": "Don't forget to check the car's oil level.",
+        "timestamp": "2023-08-21T14:45:00"
+      },
+      {
+        "id": 4,
+        "text": "I saw a great movie last night. You should watch it!",
+        "timestamp": "2023-08-21T19:20:00"
+      },
+      {
+        "id": 5,
+        "text": "How's work going for you?",
+        "timestamp": "2023-08-21T21:10:00"
+      },
+      {
+        "id": 6,
+        "text": "Remember to lock the front door when you leave.",
+        "timestamp": "2023-08-22T08:00:00"
+      },
+      {
+        "id": 7,
+        "text": "Did you get my email about the family gathering next weekend?",
+        "timestamp": "2023-08-22T11:30:00"
+      },
+      {
+        "id": 8,
+        "text": "I heard it's going to rain tomorrow. Take an umbrella!",
+        "timestamp": "2023-08-22T16:40:00"
+      },
+      {
+        "id": 9,
+        "text": "How's your new book coming along?",
+        "timestamp": "2023-08-22T19:15:00"
+      },
+      {
+        "id": 10,
+        "text": "I'm making your favorite dessert tonight.",
+        "timestamp": "2023-08-22T20:30:00"
+      }
+    ],
+    "user": [
+      {
+        "id": 1,
+        "text": "Good morning, Dad!",
+        "timestamp": "2023-08-21T09:00:00"
+      },
+      {
+        "id": 2,
+        "text": "My day's going well, thanks!",
+        "timestamp": "2023-08-21T12:30:00"
+      },
+      {
+        "id": 3,
+        "text": "I'll check the car right now.",
+        "timestamp": "2023-08-21T15:00:00"
+      },
+      {
+        "id": 4,
+        "text": "What movie did you watch? I'm curious!",
+        "timestamp": "2023-08-21T19:45:00"
+      },
+      {
+        "id": 5,
+        "text": "Work's been busy, but I'm managing.",
+        "timestamp": "2023-08-21T21:30:00"
+      },
+      {
+        "id": 6,
+        "text": "I'll make sure to lock the door, Dad.",
+        "timestamp": "2023-08-22T08:15:00"
+      },
+      {
+        "id": 7,
+        "text": "I got the email, and I'll RSVP soon.",
+        "timestamp": "2023-08-22T12:00:00"
+      },
+      {
+        "id": 8,
+        "text": "Thanks for the heads-up about the rain!",
+        "timestamp": "2023-08-22T17:00:00"
+      },
+      {
+        "id": 9,
+        "text": "The book's coming along great. Thanks for asking!",
+        "timestamp": "2023-08-22T19:45:00"
+      },
+      {
+        "id": 10,
+        "text": "Looking forward to dessert!",
+        "timestamp": "2023-08-22T20:45:00"
+      }
+    ]
+  }
+}

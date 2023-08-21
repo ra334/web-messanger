@@ -1,5 +1,5 @@
 import { NavLink } from 'react-router-dom'
-import '../assets/styles/components/ButtonStyle.css'
+import './ButtonStyle.css'
 
 interface ButtonValidate {
     path: string,

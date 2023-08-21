@@ -1,4 +1,4 @@
-import '../assets/styles/components/SideBarStyle.css'
+import './SidebarStyle.css'
 
 
 export default function SideBar() {

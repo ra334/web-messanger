@@ -1,8 +1,8 @@
-import Header from '../components/Header'
-import Footer from '../components/Footer'
-import Sidebar from '../components/Sidebar'
-import MessagesBlock from '../components/MessagesBlock'
-import '../assets/styles/pages/MainPageStyle.css'
+import Header from '../../components/layout/Header/Header'
+import Footer from '../../components/layout/Footer/Footer'
+import Sidebar from '../../components/ui/Sidebar/Sidebar'
+import MessagesBlock from '../../components/ui/MessageBlock/MessagesBlock'
+import './MainPageStyle.css'
 
 
 export default function Main() {

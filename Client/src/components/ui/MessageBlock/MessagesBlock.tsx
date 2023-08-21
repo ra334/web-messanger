@@ -1,4 +1,4 @@
-import '../assets/styles/components/MessageBlock.css'
+import './MessageBlock.css'
 
 
 export default function MessagesBlock() {
