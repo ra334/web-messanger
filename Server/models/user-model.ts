@@ -1,5 +1,6 @@
 const client = require('../utils/database-connect')
 
+
 class UserModel {
     static createTable: any
     async createTable() {

@@ -5,7 +5,6 @@ const messangerController = require('../controllers/messanger-controller')
 const router = new Router()
 
 
-
 router.post('/login', (req: any, res: any) => {
     userController.login(req, res)
 })
