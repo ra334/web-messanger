@@ -10,7 +10,7 @@ export default function Header() {
                 <div className='header_register'>  
                     <Button path='/account' text='Account'></Button>
                     <Button path='/login' text='Login'></Button>
-                    <Button path='/register' text='Register'></Button>
+                    <Button path='/registration' text='Register'></Button>
                 </div>
             </>
         </header>
