@@ -9,23 +9,18 @@ class UserService {
     async registration(nickname: string, password: string, email: string) {
         const id = uuidv4() // will also be for activation
 
-        const candidate = new UserModel({
-            id: id,
-            nickname: nickname,
-            password: hashPass(password),
-            email: email
-        })
+        const candidate = new UserModel()
     
-        await candidate.searchUserByEmail().then(res => {
-            if(res) {
-                console.log('User exist')
-            } else {
-                candidate.addUser()
-                mailService.SendActivationMail(nickname, email, id)
-                const tokens = tokenService.generateTokens()
-                console.log('User add')
-            }
-        })
+        // await candidate.searchUserByEmail().then(res => {
+        //     if(res) {
+        //         console.log('User exist')
+        //     } else {
+        //         candidate.addUser()
+        //         mailService.SendActivationMail(nickname, email, id)
+        //         const tokens = tokenService.generateTokens()
+        //         console.log('User add')
+        //     }
+        // })
     }
 }
 

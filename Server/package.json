@@ -6,12 +6,16 @@
   "scripts": {
     "build": "npx tsc",
     "start": "node index.js",
-    "dev": "npx nodemon ./index.ts"
+    "dev": "npx nodemon ./index.ts",
+    "prisma:generate": "prisma generate",
+    "prisma:migrate": "prisma migrate dev",
+    "prisma:studio": "prisma studio"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@prisma/client": "^5.2.0",
     "bcrypt": "^5.1.1",
     "cookie-parser": "^1.4.6",
     "cors": "^2.8.5",
