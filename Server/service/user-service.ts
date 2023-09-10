@@ -5,6 +5,7 @@ const { v4: uuidv4 } = require("uuid");
 const validator = require("validator");
 const tokenService = require("./token-service");
 const tokenModel = require("../models/token-model");
+const PasswordError = require('../error/passowrd-error')
 
 class UserService {
     async registration(nickname: string, password: string, email: string) {
@@ -26,10 +27,11 @@ class UserService {
     }
 
     async login(nicknameOrEmail: string, password: string) {
+        let user;
         if (validator.isEmail(nicknameOrEmail)) {
             // email
             const user = await userModel.searchUserByEmail(nicknameOrEmail);
-            if (user?.password === "pass") {
+            if (user && user?.password === hashPass(password)) {
                 const tokens = await tokenModel.searchTokenByUserID(user.id)
                 return tokenService.loginToken(user.id, tokens[0].id, {
                     userID: user.id,
@@ -37,27 +39,24 @@ class UserService {
                     email: user.email,
                     
                 });
+            } else {
+                throw new PasswordError('Incorrect password')
             }
         } else {
             // nickname
             const user = await userModel.searchUserByNickname(nicknameOrEmail);
-            if (user?.password === "pass") {
+            if (user && user?.password === hashPass(password)) {
                 const tokens = await tokenModel.searchTokenByUserID(user.id)
                 tokenService.loginToken(user.id, tokens[0].id, {
                     userID: user.id,
                     nickname: user.nickname,
                     email: user.email,
                 });
+            } else {
+                throw new PasswordError('Incorrect password')
             }
         }
     }
 }
 
 module.exports = new UserService();
-
-const userService = new UserService();
-
-userService.registration('bobrik33', 'pidoras', 'pidoras@gmail.com')
-    .then((res: any) => {
-        console.log(res)
-    })
