@@ -6,6 +6,7 @@ const validator = require("validator");
 const tokenService = require("./token-service");
 const tokenModel = require("../models/token-model");
 const PasswordError = require('../error/passowrd-error')
+const EmailError = require('../error/email-error')
 
 class UserService {
     async registration(nickname: string, password: string, email: string) {
@@ -22,7 +23,7 @@ class UserService {
 
             return tokens;
         } else {
-            return false;
+            throw new EmailError('Incorrect email')
         }
     }
 
