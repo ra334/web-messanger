@@ -1,36 +1,54 @@
-const jwt = require('jsonwebtoken')
-const TokenModel = require('../models/token-model')
-
+require("dotenv").config();
+const jwt = require("jsonwebtoken");
+const tokenModel = require("../models/token-model");
 
 class TokenService {
-    generateTokens(payload: string) {
-        const accessToken = jwt.sign(payload, 'jwt@access@@LJ', {expiresIn: '30m'})
-        const refreshToken = jwt.sign(payload, 'jwt@refresh@)*', {expiresIn: '7d'})
+    generateTokens(payload: object) {
+        const accessToken = jwt.sign(payload, process.env.JWT_ACCESS, {
+            expiresIn: "30m",
+        });
+        const refreshToken = jwt.sign(payload, process.env.JWT_REFRESH, {
+            expiresIn: "7d",
+        });
 
-        return {accessToken, refreshToken}
+        return { accessToken, refreshToken };
     }
 
-    async saveToken(userID: string, refreshToken: string) {
-        const tokenModel = new TokenModel(userID, refreshToken)
+    async registerToken(userID: string, refreshToken: string) {
+        await tokenModel.createToken(userID, refreshToken);
+    }
 
-        tokenModel.searchTokenByUserID().then((tokenValue: boolean) => {
-            tokenModel.getExpiration().then(async (expirationTime: object) => {
-                
-                if (new Date() >= expirationTime) {
-                    await tokenModel.deleteRefreshToken()
-                    return false    // the token has expired
+    async loginToken(userID: string, tokenID: string, payload: any) {
+        const userToken = await tokenModel.searchTokenByUserID(userID);
+        if (userToken) {
+            await tokenModel.deleteToken(userID, tokenID);
+            const tokens = await this.generateTokens(payload);
+            await this.registerToken(payload.userID, tokens.refreshToken);
+            return tokens;
+        } else if (!userToken) {
+            const tokens = await this.generateTokens(payload);
+            await this.registerToken(payload.userID, tokens.refreshToken);
+            return tokens;
+        }
+    }
 
-                } else if(new Date() <= expirationTime) {
-                    return tokenValue  // the token is valid
+    verifyAccssToken(accessToken: string) {
+        try {
+            jwt.verify(accessToken, process.env.JWT_REFRESH);
+            return true;
+        } catch (e) {
+            return false;
+        }
+    }
 
-                } else if (!tokenValue) {
-                    await tokenModel.addToken()
-                    return tokenValue
-                }
-            })
-        })
+    verifyRefreshToken(refreshToken: string) {
+        try {
+            jwt.verify(refreshToken, process.env.JWT_REFRESH);
+            return true;
+        } catch (e) {
+            return false;
+        }
     }
 }
 
-
-module.exports = new TokenService()
+module.exports = new TokenService();

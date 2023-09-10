@@ -1,6 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -10,49 +7,49 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model User {
-  id              String     @id @default(uuid())
-  nickname        String     @unique
+model Users {
+  id              String        @id
+  nickname        String        @unique
   password        String
-  email           String     @unique
-  role            String     @default("User")
-  last_login      DateTime   @default(now())
-  account_created DateTime   @default(now()) @map("account_created")
-  account_status  String     @default("Active")
+  email           String        @unique
+  role            String        @default("User")
+  last_login      DateTime      @default(now())
+  account_created DateTime      @default(now())
+  account_status  String        @default("Active")
   profile_picture Bytes
-  is_activated    Boolean    @default(false)
-  tokens Tokens[]
-  chat_members ChatMembers[]
+  is_activated    Boolean       @default(false)
+  tokens          Tokens[]
+  chat_members    ChatMembers[]
 }
 
 model Tokens {
   id         String   @id @default(uuid())
-  user       User     @relation(fields: [user_id], references: [id])
+  user       Users    @relation(fields: [user_id], references: [id])
   user_id    String
   token      String
+  created_at DateTime @default(now())
   expiration DateTime
-  created_at DateTime
 }
 
 model Chats {
-  id String @id @default(uuid())
-  chat_name String
-  chat_created DateTime @default(now())
-  messages Messages[]
+  id           String        @id @default(uuid())
+  chat_name    String
+  chat_created DateTime      @default(now())
+  messages     Messages[]
   chat_members ChatMembers[]
 }
 
 model Messages {
-  id String @id @default(uuid())
-  chat Chats @relation(fields: [chat_id], references: [id])
+  id      String @id @default(uuid())
+  chat    Chats  @relation(fields: [chat_id], references: [id])
   chat_id String
 }
 
 model ChatMembers {
-  id  String @id @default(uuid())
-  user User @relation(fields: [user_id], references: [id])
-  user_id String
-  chat  Chats @relation(fields: [chat_id], references: [id])
-  chat_id String
+  id          String @id @default(uuid())
+  user        Users  @relation(fields: [user_id], references: [id])
+  user_id     String
+  chat        Chats  @relation(fields: [chat_id], references: [id])
+  chat_id     String
   member_role String
 }

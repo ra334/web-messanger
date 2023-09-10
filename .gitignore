@@ -2,3 +2,4 @@ Client/node_modules
 Server/node_modules
 Server/*.jpg
 Server/prisma/migrations
+Server/.env

@@ -1,27 +1,139 @@
-const { PrismaClient } = require('@prisma/client');
-const prisma = new PrismaClient();
+import { PrismaClient } from '@prisma/client'
+const prisma = new PrismaClient()
+const fs = require('fs')
+
 
 class UserModel {
-  async createUser(data: any) {
-    return prisma.user.create({ data });
-  }
+    async createUser(
+        id: string = '',
+        nickname: string = '',
+        password: string = '',
+        email: string = '',
+    ) {
+        try {
+            await prisma.$connect()
+            const user = await prisma.users.create({
+            data: {
+                id,
+                nickname,
+                password,
+                email,
+                profile_picture: Buffer.from(fs.readFileSync('assets/user-logo.png'))
+            }
+            })
+            return user
 
-  async updateUser(id: any, data: any) {
-    return prisma.user.update({
-      where: { id },
-      data,
-    });
-  }
+        } catch (e) {
+            console.log(e)
+        } finally {
+            await prisma.$disconnect()
+        }
+    }
 
-  async deleteUser(id: any) {
-    return prisma.user.delete({ where: { id } });
-  }
+    async updateRole(role: string, user_id: string) {
+        try {
+            await prisma.$connect()
+            const updateUser = await prisma.users.update({
+                where: {id: user_id},
+                data: {role}
+            })
+            return updateUser
+    
+        } catch(e) {
+            console.log(e)
+        } finally {
+            await prisma.$disconnect()
+        }
+    }
 
-  async getUserByEmail(email: any) {
-    return prisma.user.findUnique({
-      where: { email },
-    });
-  }
+    async updateLastLogin(last_login: object, user_id: string) {
+        try {
+            await prisma.$connect()
+            const updateUser = await prisma.users.update({
+                where: {id: user_id},
+                data: {last_login}
+            })
+            return updateUser
+        } catch(e) {
+            console.log(e)
+        } finally {
+            await prisma.$disconnect()
+        }
+    }
+
+    async updateStatus(account_status: string, user_id: string) {
+        try {
+            await prisma.$connect()
+            const updateUser = await prisma.users.update({
+                where: {id: user_id},
+                data: {account_status}
+            })
+            return updateUser
+        } catch(e) {
+            console.log(e)
+        } finally {
+            await prisma.$disconnect()
+        }
+    }
+
+    async updateProfilePicture(profile_picture: string, user_id: string) {
+        try {
+            await prisma.$connect()
+            const userUdate = await prisma.users.update({
+                where: {id: user_id},
+                data: {profile_picture: Buffer.from(fs.readFileSync(profile_picture))}
+            })
+            return userUdate
+        } catch(e) {
+            console.log(e)
+        } finally {
+            await prisma.$disconnect()
+        }
+    }
+
+    async updateIsActivated(is_activated: boolean, user_id: string) {
+        try {
+            await prisma.$connect()
+            const userUpdate = await prisma.users.update({
+                where: {id: user_id},
+                data: {is_activated}
+            })
+            return userUpdate
+        } catch (e) {
+            console.log(e)
+        } finally {
+            await prisma.$disconnect()
+        }
+    }
+
+    async searchUserByEmail(email: string) {
+        try {
+            await prisma.$connect()
+            const searchEmail = await prisma.users.findUnique({
+                where: {email}
+            })
+            return searchEmail
+        } catch(e) {
+            console.log(e)
+        } finally {
+            await prisma.$disconnect()
+        }
+    }
+
+    async searchUserByNickname(nickname: string) {
+        try {
+            await prisma.$connect()
+            const searchUser = await prisma.users.findUnique({
+                where: {nickname}
+            })
+            return searchUser
+        } catch(e) {
+            console.log(e)
+        } finally {
+            await prisma.$disconnect()
+        }
+    }
 }
 
-export default UserModel
+
+export default new UserModel()
