@@ -25,8 +25,8 @@ router.get('/refresh', (req: any, res: any) => {
     userController.refresh(req, res)
 })
 
-router.get('/user', (req: any, res: any) => {
-    userController.getUser(req, res)
+router.get('/users', (req: any, res: any) => {
+    userController.getUsers(req, res)
 })
 
 router.get('/chats', (req: any, res: any) => {
