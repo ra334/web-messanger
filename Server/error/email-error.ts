@@ -1,8 +1,8 @@
 class EmailError extends Error {
     constructor(message: string) {
-        super(message)
-        this.name = 'EmailError'
+        super(message);
+        this.name = "EmailError";
     }
 }
 
-export default EmailError
+export default EmailError;
