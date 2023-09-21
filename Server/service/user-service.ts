@@ -4,21 +4,18 @@ const { v4: uuidv4 } = require("uuid");
 const validator = require("validator");
 const tokenService = require("./token-service");
 const tokenModel = require("../models/token-model");
-const PasswordError = require("../error/passowrd-error");
-const EmailError = require("../error/email-error");
-const UserError = require("../error/user-error");
-const EmailExist = require("../error/emailExist-error");
+import ApiError from '../error/api-error'
 
 class UserService {
     async registration(nickname: string, password: string, email: string) {
         if (!validator.isEmail(email)) {
-            throw new EmailError("Incorrect email");
+            throw ApiError.BadRequest("Incorrect email");
         }
 
         const isEmailExist = await userModel.searchUserByEmail(email);
 
         if (isEmailExist) {
-            throw new EmailExist("Email is alreade esist");
+            throw ApiError.BadRequest("Email is already exist");
         }
 
         const userID = uuidv4();
@@ -46,11 +43,11 @@ class UserService {
         }
 
         if (!user) {
-            throw new UserError("User doesn't exist");
+            throw ApiError.BadRequest("User doesn't exist");
         }
 
         if (user.password !== hashPass(password)) {
-            throw new PasswordError("Incorrect password");
+            throw ApiError.BadRequest("Incorrect password");
         }
 
         const tokens = await tokenModel.searchTokenByUserID(user.id);
