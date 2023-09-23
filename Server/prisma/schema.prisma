@@ -20,6 +20,7 @@ model Users {
   is_activated    Boolean       @default(false)
   tokens          Tokens[]
   chat_members    ChatMembers[]
+  messages   Messages[]
 }
 
 model Tokens {
@@ -43,6 +44,10 @@ model Messages {
   id      String @id @default(uuid())
   chat    Chats  @relation(fields: [chat_id], references: [id])
   chat_id String
+  sender  Users @relation(fields: [sender_id], references: [id])
+  sender_id String
+  message_text String
+  timestamp DateTime @default(now())
 }
 
 model ChatMembers {
