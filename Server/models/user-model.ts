@@ -7,7 +7,7 @@ class UserModel {
         id: string = "",
         nickname: string = "",
         password: string = "",
-        email: string = ""
+        email: string = "",
     ) {
         try {
             await prisma.$connect();
@@ -18,7 +18,7 @@ class UserModel {
                     password,
                     email,
                     profile_picture: Buffer.from(
-                        fs.readFileSync("assets/user-logo.png")
+                        fs.readFileSync("assets/user-logo.png"),
                     ),
                 },
             });
@@ -82,7 +82,7 @@ class UserModel {
                 where: { id: user_id },
                 data: {
                     profile_picture: Buffer.from(
-                        fs.readFileSync(profile_picture)
+                        fs.readFileSync(profile_picture),
                     ),
                 },
             });
@@ -136,6 +136,25 @@ class UserModel {
             await prisma.$disconnect();
         }
     }
+
+    async deleteUserByID(userID: string) {
+        try {
+            await prisma.$connect();
+            const deleteUserToken = await prisma.tokens.deleteMany({
+                where: { user_id: userID },
+            });
+
+            const deleteUser = await prisma.users.delete({
+                where: { id: userID },
+            });
+
+            return { deleteUserToken, deleteUser };
+        } catch (e) {
+            console.log(e);
+        } finally {
+            await prisma.$disconnect();
+        }
+    }
 }
 
-export default new UserModel();
+export default new UserModel()

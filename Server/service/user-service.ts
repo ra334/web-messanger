@@ -1,10 +1,10 @@
-import userModel from "../models/user-model";
+import userModel from '../models/user-model'
+import tokenModel from '../models/token-model'
+import ApiError from "../error/api-error";
 const hashPass = require("../utils/hash-password");
 const { v4: uuidv4 } = require("uuid");
 const validator = require("validator");
 const tokenService = require("./token-service");
-const tokenModel = require("../models/token-model");
-import ApiError from '../error/api-error'
 
 class UserService {
     async registration(nickname: string, password: string, email: string) {
@@ -52,11 +52,13 @@ class UserService {
 
         const tokens = await tokenModel.searchTokenByUserID(user.id);
 
-        return tokenService.loginToken(user.id, tokens[0].id, {
-            userID: user.id,
-            nickname: user.nickname,
-            email: user.email,
-        });
+        if (tokens) {
+            return tokenService.loginToken(user.id, tokens[0].id, {
+                userID: user.id,
+                nickname: user.nickname,
+                email: user.email,
+            });
+        }
     }
 }
 
