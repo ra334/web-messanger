@@ -1,92 +1,65 @@
 import tokenModel from './token-model'
 import userModel from './user-model'
 
-const user_id = "2";
-const token = "test_token";
-const token_2 = 'test_token_2'
-let token_id = ''
-let token_id_2 = ''
+let token_1ID: string = '';
+let token_2ID: string = '';
+let token_3ID: string = '';
 
-describe("tokenModel", () => {
-    afterAll(async () => {
-        const deleteTestUser = await userModel.deleteUserByID(user_id);
-
-        expect(deleteTestUser).toBeDefined();
-
-        if (deleteTestUser) {
-            expect(deleteTestUser.deleteUser.id).toBe(user_id);
-            expect(deleteTestUser.deleteUser.nickname).toBe("testUser2");
-        }
-    });
-
+describe('tokenModel', () => {
     beforeAll(async () => {
-        const user = await userModel.createUser(
-            user_id,
-            "testUser2",
-            "testPassword2",
-            "test2@example.com",
-            );
+        await userModel.createUser('1', 'test', 'test', 'test@test.com')
+
+    })
+
+    afterAll(async () => {
+        await userModel.deleteUserByID('1')
+    })
+    
+    it('should create token', async () => {
+        const token = await tokenModel.createToken('1', 'token')
+        const token2 = await tokenModel.createToken('1', 'token2')
+        const token3 = await tokenModel.createToken('1', 'token3')
+        expect(token?.user_id).toBe('1')
+        expect(token?.token).toBe('token')
+
+        expect(token2?.user_id).toBe('1')
+        expect(token2?.token).toBe('token2')
+
+        expect(token3?.user_id).toBe('1')
+        expect(token3?.token).toBe('token3')
+    })
+
+    it('should search tokens by user id', async () => {
+        const token = await tokenModel.getTokensByUserID('1')
+
+        expect(token).toHaveLength(3)
         
-        expect(user).toBeDefined()
-
-        if (user) {
-            expect(user.id).toBe(user_id)
+        if (token) {
+            expect(token[0].user_id).toBe('1')
+            expect(token[0].token).toBe('token')
+            token_1ID = token[0].id
+            token_2ID = token[1].id
+            token_3ID = token[2].id
         }
     })
 
-    it("should create a token", async () => {
-        const createdToken = await tokenModel.createToken(user_id, token);
+    it('should get token by id', async () => {
+        const token = await tokenModel.getTokenByID(token_1ID)
 
-        expect(createdToken).toBeDefined();
-
-        if (createdToken) {
-            token_id = createdToken.id
-            expect(createdToken.user_id).toBe(user_id);
-            expect(createdToken.token).toBe(token);
-        }
-    });
-
-    it("should delete a token", async () => {
-        const deleteToken = await tokenModel.deleteToken(
-            user_id,
-            token_id,
-        );
-
-        expect(deleteToken).toBeTruthy();
-    });
-
-    it("should search token by user id", async () => {
-        await tokenModel.createToken(user_id, token);
-        await tokenModel.createToken(user_id, token_2);
-
-        const tokens = await tokenModel.searchTokensByUserID(user_id);
-
-        expect(tokens).toHaveLength(2);
-
-        if (tokens) {
-            token_id_2 = tokens[0].id
-            expect(tokens[0].user_id).toBe(user_id);
-            expect(tokens[1].user_id).toBe(user_id);
-        }
-    });
-
-    it('should search a token by user_id', async () => {
-        const foundToken = await tokenModel.searchTokenByUserID(user_id);
-
-        expect(foundToken).toBeTruthy();
-
-        if (foundToken) {
-            expect(foundToken[0].user_id).toBe(user_id);
-        }
+        expect(token?.id).toBe(token_1ID)
+        expect(token?.token).toBe('token')
     })
 
-    it('should search a token by ID', async () => {
-        const foundToken = await tokenModel.searchTokenByID(token_id_2);
+    it('should delete a token by id', async () => {
+        const token = await tokenModel.deleteToken(token_3ID)
 
-        expect(foundToken).toBeTruthy();
-
-        if (foundToken) {
-            expect(foundToken[0].id).toBe(token_id_2);
-        }
+        expect(token?.id).toBe(token_3ID)
+        expect(token?.token).toBe('token3')
     })
-});
+
+    it('should delete tokens by user id', async () => {
+        const tokens = await tokenModel.deleteTokens('1')
+
+        expect(tokens?.count).toBe(2)
+    })
+})

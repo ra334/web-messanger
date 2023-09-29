@@ -50,7 +50,7 @@ class UserService {
             throw ApiError.BadRequest("Incorrect password");
         }
 
-        const tokens = await tokenModel.searchTokenByUserID(user.id);
+        const tokens = await tokenModel.getTokenByUserID(user.id);
 
         if (tokens) {
             return tokenService.loginToken(user.id, tokens[0].id, {

@@ -24,7 +24,8 @@ class UserModel {
             });
             return user;
         } catch (e) {
-            console.log(e);
+            console.error(e);
+            throw e;
         } finally {
             await prisma.$disconnect();
         }
@@ -39,7 +40,8 @@ class UserModel {
             });
             return updateUser;
         } catch (e) {
-            console.log(e);
+            console.error(e);
+            throw e;
         } finally {
             await prisma.$disconnect();
         }
@@ -54,7 +56,8 @@ class UserModel {
             });
             return updateUser;
         } catch (e) {
-            console.log(e);
+            console.error(e);
+            throw e;
         } finally {
             await prisma.$disconnect();
         }
@@ -69,7 +72,8 @@ class UserModel {
             });
             return updateUser;
         } catch (e) {
-            console.log(e);
+            console.error(e);
+            throw e;
         } finally {
             await prisma.$disconnect();
         }
@@ -88,7 +92,8 @@ class UserModel {
             });
             return userUdate;
         } catch (e) {
-            console.log(e);
+            console.error(e);
+            throw e;
         } finally {
             await prisma.$disconnect();
         }
@@ -103,7 +108,8 @@ class UserModel {
             });
             return userUpdate;
         } catch (e) {
-            console.log(e);
+            console.error(e);
+            throw e;
         } finally {
             await prisma.$disconnect();
         }
@@ -117,7 +123,8 @@ class UserModel {
             });
             return searchEmail;
         } catch (e) {
-            console.log(e);
+            console.error(e);
+            throw e;
         } finally {
             await prisma.$disconnect();
         }
@@ -131,7 +138,8 @@ class UserModel {
             });
             return searchUser;
         } catch (e) {
-            console.log(e);
+            console.error(e);
+            throw e;
         } finally {
             await prisma.$disconnect();
         }
@@ -140,17 +148,15 @@ class UserModel {
     async deleteUserByID(userID: string) {
         try {
             await prisma.$connect();
-            const deleteUserToken = await prisma.tokens.deleteMany({
-                where: { user_id: userID },
-            });
 
             const deleteUser = await prisma.users.delete({
                 where: { id: userID },
             });
 
-            return { deleteUserToken, deleteUser };
+            return deleteUser
         } catch (e) {
-            console.log(e);
+            console.error(e);
+            throw e;
         } finally {
             await prisma.$disconnect();
         }

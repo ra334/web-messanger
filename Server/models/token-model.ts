@@ -18,66 +18,72 @@ class TokenModel {
             });
             return createToken;
         } catch (e) {
-            console.log(e);
+            console.error(e);
+            throw e;
         } finally {
             await prisma.$disconnect();
         }
     }
 
-    async deleteToken(user_id: string, token_id: string) {
+    async deleteToken(tokenID: string) {
         try {
             await prisma.$connect();
             const deleteToken = await prisma.tokens.delete({
                 where: {
-                    id: token_id,
-                    user_id: user_id,
+                    id: tokenID
                 },
             });
             return deleteToken;
         } catch (e) {
-            console.log(e);
+            console.error(e);
+            throw e;
         } finally {
             await prisma.$disconnect();
         }
     }
 
-    async searchTokensByUserID(user_id: string) {
+    async deleteTokens(userID: string) {
+        try {
+            await prisma.$connect()
+            const tokens = await prisma.tokens.deleteMany({
+                where: {
+                    user_id: userID
+                }
+            })
+
+            return tokens
+        } catch(e) {
+            console.log(e)
+        } finally {
+            await prisma.$disconnect()
+        }
+    }
+
+    async getTokensByUserID(userID: string) {
         try {
             await prisma.$connect();
             const searchTokens = prisma.tokens.findMany({
-                where: { user_id },
+                where: { user_id: userID },
             });
             return searchTokens;
         } catch (e) {
-            console.log(e);
+            console.error(e);
+            throw e;
         } finally {
             await prisma.$disconnect();
         }
     }
 
-    async searchTokenByUserID(user_id: string) {
+    async getTokenByID(tokenID: string) {
         try {
             await prisma.$connect();
-            const searchToken = prisma.tokens.findMany({
-                where: { user_id },
+            const searchToken = prisma.tokens.findFirst({
+                where: { id: tokenID },
             });
             return searchToken;
         } catch (e) {
-            console.log(e);
-        } finally {
-            await prisma.$disconnect();
-        }
-    }
-
-    async searchTokenByID(token_id: string) {
-        try {
-            await prisma.$connect();
-            const searchToken = prisma.tokens.findMany({
-                where: { id: token_id },
-            });
-            return searchToken;
-        } catch (e) {
-            console.log(e);
+            console.error(e);
+            throw e;
         } finally {
             await prisma.$disconnect();
         }
