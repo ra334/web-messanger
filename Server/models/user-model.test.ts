@@ -1,11 +1,9 @@
-import userModel from './user-model'
-const fs = require("fs");
-
-const userID = '11'
-const userNickname = 'testUser'
+import userModel from "./user-model";
 
 describe("userModel", () => {
-    
+    const userID = "11";
+    const userNickname = "testUser";
+
     it("should create a user", async () => {
         const user = await userModel.createUser(
             userID,
@@ -14,50 +12,41 @@ describe("userModel", () => {
             "test@example.com",
         );
 
-        if (user) {
-            expect(user.id).toBe(userID);
-            expect(user.nickname).toBe(userNickname);
-            expect(user.password).toBe("testPassword");
-            expect(user.email).toBe("test@example.com");
-        }
+        expect(user).toBeDefined();
+        expect(user.id).toBe(userID);
+        expect(user.nickname).toBe(userNickname);
+        expect(user.password).toBe("testPassword");
+        expect(user.email).toBe("test@example.com");
     });
 
     it("should update user role", async () => {
-        const updateUserRole = await userModel.updateRole("admin", userID);
+        const updatedUser = await userModel.updateRole("admin", userID);
 
-        expect(updateUserRole).toBeDefined();
-
-        if (updateUserRole) {
-            expect(updateUserRole.role).toBe("admin");
-        }
+        expect(updatedUser).toBeDefined();
+        expect(updatedUser.role).toBe("admin");
     });
 
     it("should search user by email", async () => {
         const user = await userModel.searchUserByEmail("test@example.com");
 
         expect(user).toBeDefined();
-
-        if (user) {
-            expect(user.id).toBe(userID);
-            expect(user.email).toBe("test@example.com");
-        }
+        expect(user?.id).toBe(userID);
+        expect(user?.email).toBe("test@example.com");
     });
 
     it("should search user by nickname", async () => {
         const user = await userModel.searchUserByNickname(userNickname);
 
         expect(user).toBeDefined();
-
-        if (user) {
-            expect(user.id).toBe(userID);
-            expect(user.nickname).toBe(userNickname);
-        }
+        expect(user?.id).toBe(userID);
+        expect(user?.nickname).toBe(userNickname);
     });
 
-    it('should delete an user', async () => {
-        const user = await userModel.deleteUserByID(userID)
+    it("should delete a user", async () => {
+        const deletedUser = await userModel.deleteUserByID(userID);
 
-        expect(user.nickname).toBe(userNickname)
-        expect(user.id).toBe(userID)
-    })
+        expect(deletedUser).toBeDefined();
+        expect(deletedUser.nickname).toBe(userNickname);
+        expect(deletedUser.id).toBe(userID);
+    });
 });

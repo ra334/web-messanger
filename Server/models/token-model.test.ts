@@ -1,33 +1,37 @@
 import tokenModel from './token-model'
 import userModel from './user-model'
 
-let token_1ID: string = '';
-let token_2ID: string = '';
-let token_3ID: string = '';
-
 describe('tokenModel', () => {
+    let token_1ID: string = '';
+    let token_2ID: string = '';
+    let token_3ID: string = '';
+
     beforeAll(async () => {
         await userModel.createUser('1', 'test', 'test', 'test@test.com')
-
     })
 
     afterAll(async () => {
         await userModel.deleteUserByID('1')
     })
+
+    const createTokens = async () => {
+        const token1 = await tokenModel.createToken('1', 'token1');
+        const token2 = await tokenModel.createToken('1', 'token2');
+        const token3 = await tokenModel.createToken('1', 'token3');
+        return [token1, token2, token3]
+    }
+
+    const verifyToken = (token: any, expectedToken: string, userID: string) => {
+        expect(token?.user_id).toBe(userID)
+        expect(token?.token).toBe(expectedToken)
+    }
     
     it('should create token', async () => {
-        const token = await tokenModel.createToken('1', 'token')
-        const token2 = await tokenModel.createToken('1', 'token2')
-        const token3 = await tokenModel.createToken('1', 'token3')
-        expect(token?.user_id).toBe('1')
-        expect(token?.token).toBe('token')
-
-        expect(token2?.user_id).toBe('1')
-        expect(token2?.token).toBe('token2')
-
-        expect(token3?.user_id).toBe('1')
-        expect(token3?.token).toBe('token3')
-    })
+        const tokens = await createTokens();
+        tokens.forEach((token: any, index) => {
+            verifyToken(token, `token${index + 1}`, `1`);
+        });
+    });    
 
     it('should search tokens by user id', async () => {
         const token = await tokenModel.getTokensByUserID('1')
@@ -36,7 +40,7 @@ describe('tokenModel', () => {
         
         if (token) {
             expect(token[0].user_id).toBe('1')
-            expect(token[0].token).toBe('token')
+            expect(token[0].token).toBe('token1')
             token_1ID = token[0].id
             token_2ID = token[1].id
             token_3ID = token[2].id
@@ -47,7 +51,7 @@ describe('tokenModel', () => {
         const token = await tokenModel.getTokenByID(token_1ID)
 
         expect(token?.id).toBe(token_1ID)
-        expect(token?.token).toBe('token')
+        expect(token?.token).toBe('token1')
     })
 
     it('should delete a token by id', async () => {
