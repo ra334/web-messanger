@@ -63,12 +63,12 @@ class UserModel {
         }
     }
 
-    async updateStatus(account_status: string, user_id: string) {
+    async updateStatus(accountStatus: string, userID: string) {
         try {
             await prisma.$connect();
             const updateUser = await prisma.users.update({
-                where: { id: user_id },
-                data: { account_status },
+                where: { id: userID },
+                data: { account_status: accountStatus },
             });
             return updateUser;
         } catch (e) {
@@ -79,14 +79,14 @@ class UserModel {
         }
     }
 
-    async updateProfilePicture(profile_picture: string, user_id: string) {
+    async updateProfilePicture(profilePicture: string, userID: string) {
         try {
             await prisma.$connect();
             const userUdate = await prisma.users.update({
-                where: { id: user_id },
+                where: { id: userID },
                 data: {
                     profile_picture: Buffer.from(
-                        fs.readFileSync(profile_picture),
+                        fs.readFileSync(profilePicture),
                     ),
                 },
             });

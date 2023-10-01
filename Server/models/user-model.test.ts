@@ -1,8 +1,11 @@
 import userModel from "./user-model";
+const fs = require('fs')
 
 describe("userModel", () => {
     const userID = "11";
     const userNickname = "testUser";
+    const currentDate = new Date()
+    const IMGpath = 'assets/test.png'
 
     it("should create a user", async () => {
         const user = await userModel.createUser(
@@ -25,6 +28,28 @@ describe("userModel", () => {
         expect(updatedUser).toBeDefined();
         expect(updatedUser.role).toBe("admin");
     });
+
+    it("should update last login", async () => {
+        const updatedUser = await userModel.updateLastLogin(currentDate, userID)
+
+        expect(updatedUser.id).toBe(userID);
+        expect(updatedUser.last_login).toEqual(currentDate);
+    })
+
+    it("should update user status", async () => {
+        const updatedUser = await userModel.updateStatus('Offline', userID)
+
+        expect(updatedUser.id).toBe(userID)
+        expect(updatedUser.account_status).toBe('Offline')
+    })
+
+    it("should update profile picture", async () => {
+        const updatedUser = await userModel.updateProfilePicture(IMGpath, userID)
+        const IMGbufer = fs.readFileSync(IMGpath)
+
+        expect(updatedUser.id).toBe(userID)
+        expect(updatedUser.profile_picture).toEqual(IMGbufer)
+    })
 
     it("should search user by email", async () => {
         const user = await userModel.searchUserByEmail("test@example.com");
