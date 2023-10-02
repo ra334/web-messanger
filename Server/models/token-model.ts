@@ -25,6 +25,36 @@ class TokenModel {
         }
     }
 
+    async getTokensByUserID(userID: string) {
+        try {
+            await prisma.$connect();
+            const searchTokens = prisma.tokens.findMany({
+                where: { user_id: userID },
+            });
+            return searchTokens;
+        } catch (e) {
+            console.error(e);
+            throw e;
+        } finally {
+            await prisma.$disconnect();
+        }
+    }
+
+    async getTokenByID(tokenID: string) {
+        try {
+            await prisma.$connect();
+            const searchToken = prisma.tokens.findFirst({
+                where: { id: tokenID },
+            });
+            return searchToken;
+        } catch (e) {
+            console.error(e);
+            throw e;
+        } finally {
+            await prisma.$disconnect();
+        }
+    }
+
     async deleteToken(tokenID: string) {
         try {
             await prisma.$connect();
@@ -56,36 +86,6 @@ class TokenModel {
             console.log(e)
         } finally {
             await prisma.$disconnect()
-        }
-    }
-
-    async getTokensByUserID(userID: string) {
-        try {
-            await prisma.$connect();
-            const searchTokens = prisma.tokens.findMany({
-                where: { user_id: userID },
-            });
-            return searchTokens;
-        } catch (e) {
-            console.error(e);
-            throw e;
-        } finally {
-            await prisma.$disconnect();
-        }
-    }
-
-    async getTokenByID(tokenID: string) {
-        try {
-            await prisma.$connect();
-            const searchToken = prisma.tokens.findFirst({
-                where: { id: tokenID },
-            });
-            return searchToken;
-        } catch (e) {
-            console.error(e);
-            throw e;
-        } finally {
-            await prisma.$disconnect();
         }
     }
 }

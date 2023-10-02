@@ -1,8 +1,8 @@
 import chatModel from "./chat-model";
 
-let chatID: string;
-
 describe("chatModel", () => {
+    let chatID: string;
+
     afterAll(async () => {
         const chat = await chatModel.deleteChatByID(chatID);
         expect(chat?.id).toBe(chatID);

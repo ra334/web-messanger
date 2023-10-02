@@ -55,17 +55,17 @@ describe("userModel", () => {
         });
     });
 
-    describe("User Search and Deletion", () => {
-        it("should search user by email", async () => {
-            const user = await userModel.searchUserByEmail("test@example.com");
+    describe("User getting and Deletion", () => {
+        it("should get user by email", async () => {
+            const user = await userModel.getUserByEmail("test@example.com");
 
             expect(user).toBeDefined();
             expect(user?.id).toBe(userID);
             expect(user?.email).toBe("test@example.com");
         });
 
-        it("should search user by nickname", async () => {
-            const user = await userModel.searchUserByNickname(userNickname);
+        it("should get user by nickname", async () => {
+            const user = await userModel.getUserByNickname(userNickname);
 
             expect(user).toBeDefined();
             expect(user?.id).toBe(userID);

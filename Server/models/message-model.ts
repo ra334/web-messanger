@@ -2,18 +2,13 @@ import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 
 class MessageModel {
-    async createMessage(
-        chat_id: string,
-        sender_id: string,
-        message_text: string,
-    ) {
+    async createMessage(senderID: string, messageText: string) {
         try {
             await prisma.$connect();
             const createdMessage = await prisma.messages.create({
                 data: {
-                    chat_id,
-                    sender_id,
-                    message_text,
+                    sender_id: senderID,
+                    message_text: messageText,
                 },
             });
 
@@ -26,12 +21,12 @@ class MessageModel {
         }
     }
 
-    async getMessageID(userID: string, messageText: string) {
+    async getMessage(senderID: string, messageText: string) {
         try {
             await prisma.$connect();
             const message = await prisma.messages.findFirst({
                 where: {
-                    sender_id: userID,
+                    sender_id: senderID,
                     message_text: messageText,
                 },
             });
@@ -45,19 +40,38 @@ class MessageModel {
         }
     }
 
-    async updateMessage(newMessage: string, messageID: string) {
+    async getMessages(senderID: string) {
         try {
             await prisma.$connect();
-            const updateMessage = await prisma.messages.update({
+            const messages = await prisma.messages.findMany({
+                where: {
+                    sender_id: senderID,
+                },
+            });
+
+            return messages;
+        } catch (e) {
+            console.error(e);
+            throw e;
+        } finally {
+            await prisma.$disconnect();
+        }
+    }
+
+    async updateMessage(messageID: string, messageText: string) {
+        try {
+            await prisma.$connect();
+            const message = await prisma.messages.update({
                 where: {
                     id: messageID,
                 },
                 data: {
-                    message_text: newMessage,
+                    message_text: messageText,
+                    is_updated: true,
                 },
             });
 
-            return updateMessage;
+            return message;
         } catch (e) {
             console.error(e);
             throw e;
@@ -69,13 +83,13 @@ class MessageModel {
     async deleteMessage(messageID: string) {
         try {
             await prisma.$connect();
-            const deleteMessage = await prisma.messages.delete({
+            const message = await prisma.messages.delete({
                 where: {
                     id: messageID,
                 },
             });
 
-            return deleteMessage;
+            return message;
         } catch (e) {
             console.error(e);
             throw e;
@@ -84,16 +98,16 @@ class MessageModel {
         }
     }
 
-    async deleteAllMessage(chatID: string) {
+    async deleteMessages(senderID: string) {
         try {
             await prisma.$connect();
-            const message = await prisma.messages.deleteMany({
+            const messages = await prisma.messages.deleteMany({
                 where: {
-                    chat_id: chatID,
+                    sender_id: senderID,
                 },
             });
 
-            return message;
+            return messages;
         } catch (e) {
             console.error(e);
             throw e;

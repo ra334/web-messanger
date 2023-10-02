@@ -9,7 +9,7 @@ datasource db {
 
 model Users {
   id              String        @id
-  nickname        String        @unique
+  nickname        String        @unique 
   password        String
   email           String        @unique
   role            String        @default("User")
@@ -20,7 +20,6 @@ model Users {
   is_activated    Boolean       @default(false)
   tokens          Tokens[]
   chat_members    ChatMembers[]
-  Messages        Messages[]
 }
 
 model Tokens {
@@ -36,19 +35,7 @@ model Chats {
   id           String        @id @default(uuid())
   chat_name    String        @unique
   chat_created DateTime      @default(now())
-  messages     Messages[]
   chat_members ChatMembers[]
-}
-
-model Messages {
-  id           String   @id @default(uuid())
-  chat         Chats    @relation(fields: [chat_id], references: [id])
-  chat_id      String
-  sender       Users    @relation(fields: [sender_id], references: [id])
-  sender_id    String
-  message_text String
-  timestamp    DateTime @default(now())
-  updated      Boolean  @default(false)
 }
 
 model ChatMembers {
@@ -58,4 +45,15 @@ model ChatMembers {
   chat        Chats  @relation(fields: [chat_id], references: [id])
   chat_id     String
   member_role String
+  messages Messages[]
+}
+
+
+model Messages {
+  id           String         @id @default(uuid())
+  sender       ChatMembers    @relation(fields: [sender_id], references: [id])
+  sender_id    String
+  message_text String
+  timestamp    DateTime       @default(now())
+  is_updated      Boolean        @default(false)
 }

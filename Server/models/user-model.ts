@@ -31,6 +31,36 @@ class UserModel {
         }
     }
 
+    async getUserByEmail(email: string) {
+        try {
+            await prisma.$connect();
+            const searchEmail = await prisma.users.findUnique({
+                where: { email },
+            });
+            return searchEmail;
+        } catch (e) {
+            console.error(e);
+            throw e;
+        } finally {
+            await prisma.$disconnect();
+        }
+    }
+
+    async getUserByNickname(nickname: string) {
+        try {
+            await prisma.$connect();
+            const searchUser = await prisma.users.findUnique({
+                where: { nickname },
+            });
+            return searchUser;
+        } catch (e) {
+            console.error(e);
+            throw e;
+        } finally {
+            await prisma.$disconnect();
+        }
+    }
+
     async updateRole(role: string, user_id: string) {
         try {
             await prisma.$connect();
@@ -107,36 +137,6 @@ class UserModel {
                 data: { is_activated },
             });
             return userUpdate;
-        } catch (e) {
-            console.error(e);
-            throw e;
-        } finally {
-            await prisma.$disconnect();
-        }
-    }
-
-    async searchUserByEmail(email: string) {
-        try {
-            await prisma.$connect();
-            const searchEmail = await prisma.users.findUnique({
-                where: { email },
-            });
-            return searchEmail;
-        } catch (e) {
-            console.error(e);
-            throw e;
-        } finally {
-            await prisma.$disconnect();
-        }
-    }
-
-    async searchUserByNickname(nickname: string) {
-        try {
-            await prisma.$connect();
-            const searchUser = await prisma.users.findUnique({
-                where: { nickname },
-            });
-            return searchUser;
         } catch (e) {
             console.error(e);
             throw e;

@@ -26,26 +26,6 @@ class ChatMemberModel {
         }
     }
 
-    async updateRole(memberID: string, memberRole: string) {
-        try {
-            await prisma.$connect()
-            const member = await prisma.chatMembers.update({
-                where: {
-                    id: memberID,
-                },
-                data: {
-                    member_role: memberRole,
-                },
-            });
-            return member
-        } catch(e) {
-            console.error(e)
-            throw(e)
-        } finally {
-            await prisma.$disconnect()
-        }
-    }
-
     async getMemberID(userID: string, chatID: string) {
         try {
             await prisma.$connect()
@@ -97,6 +77,26 @@ class ChatMemberModel {
             })
 
             return members
+        } catch(e) {
+            console.error(e)
+            throw(e)
+        } finally {
+            await prisma.$disconnect()
+        }
+    }
+
+    async updateRole(memberID: string, memberRole: string) {
+        try {
+            await prisma.$connect()
+            const member = await prisma.chatMembers.update({
+                where: {
+                    id: memberID,
+                },
+                data: {
+                    member_role: memberRole,
+                },
+            });
+            return member
         } catch(e) {
             console.error(e)
             throw(e)

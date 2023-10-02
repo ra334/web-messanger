@@ -8,9 +8,9 @@
     "start": "node index.js",
     "dev": "npx nodemon ./index.ts",
     "test": "jest --config ./jest.config.js",
-    "prisma:generate": "prisma generate",
-    "prisma:migrate": "prisma migrate dev",
-    "prisma:studio": "prisma studio"
+    "prisma-generate": "prisma generate",
+    "prisma-migrate": "prisma migrate dev",
+    "prisma-studio": "prisma studio"
   },
   "keywords": [],
   "author": "",
