@@ -3,4 +3,4 @@ class MessangerService {
 }
 
 
-module.exports = new MessangerService()
+export default new MessangerService()

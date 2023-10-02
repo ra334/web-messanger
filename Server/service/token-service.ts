@@ -1,6 +1,6 @@
 require("dotenv").config();
 const jwt = require("jsonwebtoken");
-const tokenModel = require("../models/token-model");
+import tokenModel from '../models/token-model'
 
 class TokenService {
     generateTokens(payload: object) {
@@ -18,23 +18,37 @@ class TokenService {
         await tokenModel.createToken(userID, refreshToken);
     }
 
-    async loginToken(userID: string, tokenID: string, payload: any) {
-        const userToken = await tokenModel.searchTokenByUserID(userID);
-        if (userToken) {
-            await tokenModel.deleteToken(userID, tokenID);
-            const tokens = await this.generateTokens(payload);
-            await this.registerToken(payload.userID, tokens.refreshToken);
-            return tokens;
-        } else if (!userToken) {
-            const tokens = await this.generateTokens(payload);
-            await this.registerToken(payload.userID, tokens.refreshToken);
-            return tokens;
+    async loginToken(userID: string, token: any, payload: any) {
+        let isTokenValid;
+        let tokens;
+
+        if (token) {
+            isTokenValid = this.verifyRefreshToken(token)
+            tokens = await tokenModel.getTokensByUserID(userID)
+        } else {
+            return this.generateTokens(payload)
+        }
+
+        if (isTokenValid) {
+            tokens.forEach(async (token) => {
+                const isTokenValid = this.verifyRefreshToken(token.token)
+
+                if (!isTokenValid) {
+                    await tokenModel.deleteToken(token.id)
+                } 
+            })
+
+            return this.generateTokens(payload)
+        } else {
+            return this.generateTokens(payload)
         }
     }
 
-    verifyAccssToken(accessToken: string) {
+    async refreshToken() {}
+
+    verifyAccessToken(accessToken: string) {
         try {
-            jwt.verify(accessToken, process.env.JWT_REFRESH);
+            jwt.verify(accessToken, process.env.JWT_ACCESS);
             return true;
         } catch (e) {
             return false;
@@ -51,4 +65,4 @@ class TokenService {
     }
 }
 
-module.exports = new TokenService();
+export default new TokenService();
