@@ -1,7 +1,5 @@
-import tokenService from './token-service' // Підключаємо ваш модуль TokenService
-const jwt = require('jsonwebtoken');
+import tokenService from './token-service' 
 
-// Мокуємо методи, які ви використовуєте з моделі tokenModel
 jest.mock('../models/token-model', () => ({
     getTokensByUserID: jest.fn(),
     deleteToken: jest.fn(),
