@@ -5,7 +5,6 @@
   "main": "index.js",
   "scripts": {
     "build": "npx tsc",
-    "start": "node index.js",
     "dev": "npx nodemon ./index.ts",
     "test": "jest --config ./jest.config.js",
     "prisma-generate": "prisma generate",
