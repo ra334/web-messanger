@@ -3,7 +3,7 @@ import { users } from "./users";
 
 export const devices = pgTable('devices', {
     id: uuid().primaryKey().defaultRandom(),
-    userId: uuid().references(() => users.ID),
+    userId: uuid().references(() => users.id),
     deviceName: varchar('device_name', {length: 255}).notNull(),
     deviceType: varchar('device_type', {length: 100}).notNull(),
     userAgent: text('user_agent').notNull(),
