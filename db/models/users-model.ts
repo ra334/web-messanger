@@ -21,7 +21,7 @@ import {
     UpdateUserIsBlocked,
     UpdateUserUpdateAt,
     DeleteUser
-} from './user'
+} from './users'
 
 // create
 
