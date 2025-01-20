@@ -24,12 +24,12 @@ interface GetDialogs {
 
 interface UpdateIsDeletedForSender {
     id: string;
-    senderID: string;
+    value: boolean;
 }
 
 interface UpdateIsDeletedForReceiver {
     id: string;
-    receiverID: string;
+    value: boolean;
 }
 
 interface UpdateLastMessage {
