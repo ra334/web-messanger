@@ -29,11 +29,11 @@ export const reportEnum = pgEnum('report_type', reportTypes);
 export const statusEnum = pgEnum('status', reportStatuses);
 
 export const reports = pgTable("reports", {
-    id: uuid('id').primaryKey().defaultRandom(),
-    userID: uuid('user_id').references(() => users.id),
-    reportedUser: uuid('reported_user_id').references(() => users.id),
-    reportType: reportEnum(),
-    notes: text('notes'),
-    status: statusEnum(),
-    createdAt: timestamp('created_at').defaultNow(),
+    id: uuid('id').primaryKey().notNull().defaultRandom(),
+    userID: uuid('user_id').notNull().references(() => users.id),
+    reportedUserID: uuid('reported_user_id').notNull().references(() => users.id),
+    reportType: reportEnum().notNull(),
+    notes: text('notes').notNull(),
+    status: statusEnum().notNull().default('pending'),
+    createdAt: timestamp('created_at').notNull().defaultNow(),
 });
