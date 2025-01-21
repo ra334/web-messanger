@@ -12,7 +12,6 @@ interface UserData {
     isActive: boolean;
     isBlocked: boolean;
     createdAT: Date;
-    updatedAT: Date;
 }
 
 interface CreateUser {
@@ -100,11 +99,6 @@ interface UpdateUserIsBlocked {
     isBlocked: boolean;
 }
 
-interface UpdateUserUpdateAt {
-    id: string;
-    updated_at: Date;
-}
-
 interface DeleteUser {
     id: string;
 }
@@ -127,6 +121,5 @@ export {
     UpdateUserIsReported,
     UpdateUserIsActive,
     UpdateUserIsBlocked,
-    UpdateUserUpdateAt,
     DeleteUser
 }

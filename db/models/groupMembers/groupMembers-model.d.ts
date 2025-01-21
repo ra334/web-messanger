@@ -5,7 +5,6 @@ interface GroupMembers {
     isAdmin: boolean;
     joinedAt: Date;
     createdAt: Date;
-    updatedAt: Date;
 }
 
 interface CreateGroupMember {

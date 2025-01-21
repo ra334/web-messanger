@@ -44,10 +44,11 @@ async function getBlockedUser(data: GetBlockdeUser): Promise<BlockedUser> {
     }
 }
 
-async function getBlockdeUsers(data: GetBlockdeUser): Promise<BlockedUser[]> {
+async function getBlockdeUsers(data: GetBlockedUsers): Promise<BlockedUser[]> {
     try {
         const users = await db.query.blockedUsers.findMany({
-            where: (eq(blockedUsers.id, data.id))
+            limit: data.limit,
+            offset: data.offset
         })
 
         return users

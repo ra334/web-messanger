@@ -10,5 +10,4 @@ export const devices = pgTable('devices', {
     isActive: boolean('is_active').notNull().default(true),
     lastAccessedAt: timestamp('last_accessed_at').notNull().defaultNow(),
     createdAt: timestamp('created_at').notNull().defaultNow(),
-    updatedAt: timestamp('updated_at').notNull().defaultNow()
 })

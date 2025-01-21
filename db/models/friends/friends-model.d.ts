@@ -4,7 +4,6 @@ interface Friend {
     friendID: string;
     firstName: string;
     createdAt: Date;
-    updatedAt: Date;
 }
 
 interface CreateFriend {

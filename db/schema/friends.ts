@@ -7,5 +7,4 @@ export const friends = pgTable('friends', {
     friendID: uuid('friend_id').references(() => users.id).notNull(),
     firstName: varchar('first_name', {length: 45}).notNull(),
     createdAt: timestamp('created_at').notNull().defaultNow(),
-    updatedAt: timestamp('updated_at').notNull().defaultNow()
 })

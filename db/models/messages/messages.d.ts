@@ -6,7 +6,6 @@ interface Message {
     is_edited: boolean;
     is_readed: boolean;
     createdAt: Date;
-    updatedAt: Date;
 }
 
 interface CreateMessage {
@@ -43,11 +42,6 @@ interface UpdateMessageIsReaded {
     isReaded: boolean;
 }
 
-interface UpdateMessageUpdatedAt {
-    id: string;
-    updatedAt: Date;
-}
-
 interface DeleteMessage {
     id: string;
 }
@@ -61,6 +55,5 @@ export {
     UpdateMessageText,
     UpdateMessageIsEdited,
     UpdateMessageIsReaded,
-    UpdateMessageUpdatedAt,
     DeleteMessage
 }

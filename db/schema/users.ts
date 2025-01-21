@@ -15,6 +15,5 @@ export const users = pgTable("users", {
     isReported: boolean('is_reported').notNull().default(false),
     isActive: boolean('is_active').notNull().default(true),
     isBlocked: boolean('is_blocked').notNull().default(false),
-    createdAT: timestamp('created_at').notNull().defaultNow(),
-    updatedAT: timestamp('updated_at').notNull().defaultNow()
+    createdAT: timestamp('created_at').notNull().defaultNow()
 });

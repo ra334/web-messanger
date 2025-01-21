@@ -19,7 +19,6 @@ import {
     UpdateUserIsReported,
     UpdateUserIsActive,
     UpdateUserIsBlocked,
-    UpdateUserUpdateAt,
     DeleteUser
 } from './users'
 
@@ -270,20 +269,6 @@ async function updateUserIsBlocked(data: UpdateUserIsBlocked) {
     }
 }
 
-async function updateUserUpdatedAt(data: UpdateUserUpdateAt) {
-    try {
-        const updatedUser = await db
-            .update(users)
-            .set({updatedAT: new Date()})
-            .where(eq(users.id, data.id))
-
-        return updatedUser
-    } catch (error) {
-        console.error('Updating a user updated_at error:', error)
-        throw error;
-    }
-}
-
 // delete
 
 async function deleteUser(data: DeleteUser) {
@@ -315,6 +300,5 @@ export {
     updateUserIsReported,
     updateUserIsActive,
     updateUserIsBlocked,
-    updateUserUpdatedAt,
     deleteUser
 }

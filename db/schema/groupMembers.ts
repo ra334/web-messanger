@@ -9,5 +9,4 @@ export const groupsMembers = pgTable('groups_members', {
     isAdmin: boolean('is_admin').notNull().default(false),
     joinedAt: timestamp('joined_at').notNull().defaultNow(),
     createdAt: timestamp('created_at').notNull().defaultNow(),
-    updatedAt: timestamp('updated_at').notNull().defaultNow(),
 })

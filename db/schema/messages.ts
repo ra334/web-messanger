@@ -9,6 +9,5 @@ export const messages = pgTable('messages', {
     text: varchar('text', {length: 255}).notNull(),
     is_edited: boolean('is_edited').notNull().default(false),
     is_readed: boolean('is_readed').notNull().default(false),
-    createdAt: timestamp('created_at').notNull().defaultNow(),
-    updatedAt: timestamp('updated_at').notNull().defaultNow()
+    createdAt: timestamp('created_at').notNull().defaultNow()
 })

@@ -7,7 +7,6 @@ interface Device {
     isActive: boolean;
     lastAccessedAt: Date;
     createdAt: Date;
-    updatedAt: Date;
 }
 
 interface CreateDevice {

@@ -10,7 +10,6 @@ import {
     UpdateMessageText,
     UpdateMessageIsEdited,
     UpdateMessageIsReaded,
-    UpdateMessageUpdatedAt,
     DeleteMessage
 } from './messages'
 
@@ -128,22 +127,6 @@ async function updateMessageIsReaded(data: UpdateMessageIsReaded) {
     }
 }
 
-async function updateMessageUpdatedAt(data: UpdateMessageUpdatedAt) {
-    try {
-        const message = await db
-            .update(messages)
-            .set({
-                updatedAt: data.updatedAt
-            })
-            .where(eq(messages.id, data.id))
-
-        return message
-    } catch (error) {
-        console.error('Updating message updatedAt error:', error)
-        throw error;
-    }
-}
-
 // delete
 
 async function deleteMessage(data: DeleteMessage) {
@@ -167,6 +150,5 @@ export {
     updateMessageText,
     updateMessageIsEdited,
     updateMessageIsReaded,
-    updateMessageUpdatedAt,
     deleteMessage
 }
