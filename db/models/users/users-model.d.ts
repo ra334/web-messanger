@@ -27,15 +27,6 @@ interface GetUser {
     id: string;
 }
 
-interface ReturnUser {
-    id: string;
-    firstName: string;
-    lastName: string;
-    nickName: string;
-    email: string;
-    avatarURL: string;
-}
-
 interface ReturnUserFirstName {
     firstName: string;
 }
@@ -107,7 +98,6 @@ export {
     UserData,
     CreateUser,
     GetUser,
-    ReturnUser,
     ReturnUserFirstName,
     ReturnUserAvatarURL,
     UpdateUserFirstName,

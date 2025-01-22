@@ -5,7 +5,6 @@ import {
     UserData,
     CreateUser,
     GetUser,
-    ReturnUser,
     ReturnUserFirstName,
     ReturnUserAvatarURL,
     UpdateUserFirstName,
@@ -20,7 +19,7 @@ import {
     UpdateUserIsActive,
     UpdateUserIsBlocked,
     DeleteUser
-} from './users'
+} from './users-model.d'
 
 // create
 
@@ -44,18 +43,10 @@ async function createUser(data: CreateUser): Promise<UserData> {
 
 // read
 
-async function getUser(data: GetUser): Promise<ReturnUser> {
+async function getUser(data: GetUser): Promise<UserData> {
     try {
         const user = await db.query.users.findFirst({
-            where: (eq(users.id, data.id)),
-            columns: {
-                id: true,
-                firstName: true,
-                lastName: true,
-                nickName: true,
-                email: true,
-                avatarURL: true,
-            }
+            where: (eq(users.id, data.id))
         })
 
         if (!user) {
@@ -115,154 +106,165 @@ async function getUserAvatarURL(data: GetUser): Promise<ReturnUserAvatarURL> {
 
 // update
 
-async function updateUserFirstName(data: UpdateUserFirstName)  {
+async function updateUserFirstName(data: UpdateUserFirstName): Promise<UserData> {
     try {
         const updatedUser = await db
             .update(users)
             .set({firstName: data.firstName})
             .where(eq(users.id, data.id))
+            .returning()
 
-        return updatedUser
+        return updatedUser[0]
     } catch (error) {
         console.error('Updating a user first name error:', error)
         throw error;
     }
 }
 
-async function updateUserLastName(data: UpdateUserLastName) {
+async function updateUserLastName(data: UpdateUserLastName): Promise<UserData> {
     try {
         const updatedUser = await db
             .update(users)
             .set({lastName: data.lastName})
             .where(eq(users.id, data.id))
+            .returning()
 
-        return updatedUser
+        return updatedUser[0]
     } catch (error) {
         console.error('Updating a user last name error:', error)
         throw error;
     }
 }
 
-async function updateUserNickname(data: UpdateUserNickname) {
+async function updateUserNickname(data: UpdateUserNickname): Promise<UserData> {
     try {
         const updatedUser = await db
             .update(users)
             .set({nickName: data.nickName})
             .where(eq(users.id, data.id))
+            .returning()
 
-        return updatedUser
+        return updatedUser[0]
     } catch (error) {
         console.error('Updating a user nickname error:', error)
         throw error;
     }
 }
 
-async function updateUserEmail(data: UpdateUserEmail) {
+async function updateUserEmail(data: UpdateUserEmail): Promise<UserData> {
     try {
         const updatedUser = await db
             .update(users)
             .set({email: data.email})
             .where(eq(users.id, data.id))
+            .returning()
 
-        return updatedUser
+        return updatedUser[0]
     } catch (error) {
         console.error('Updating a user email error:', error)
         throw error;
     }
 }
 
-async function updateUserPassword(data: UpdateUserPassword) {
+async function updateUserPassword(data: UpdateUserPassword): Promise<UserData> {
     try {
         const updatedUser = await db
             .update(users)
             .set({password: data.password})
             .where(eq(users.id, data.id))
+            .returning()
 
-        return updatedUser
+        return updatedUser[0]
     } catch (error) {
         console.error('Updating a user password error:', error)
         throw error;
     }
 }
 
-async function updateUserAvatarURL(data: UpdateUserAvatarURL) {
+async function updateUserAvatarURL(data: UpdateUserAvatarURL): Promise<UserData> {
     try {
         const updatedUser = await db
             .update(users)
             .set({avatarURL: data.avatarURL})
             .where(eq(users.id, data.id))
+            .returning()
 
-        return updatedUser
+        return updatedUser[0]
     } catch (error) {
         console.error('Updating a user avatar URL error:', error)
         throw error;
     }
 }
 
-async function updateUserStatus(data: UpdateUserStatus) {
+async function updateUserStatus(data: UpdateUserStatus): Promise<UserData> {
     try {
         const updatedUser = await db
             .update(users)
             .set({status: data.status})
             .where(eq(users.id, data.id))
+            .returning()
 
-        return updatedUser
+        return updatedUser[0]
     } catch (error) {
         console.error('Updating a user status error:', error)
         throw error;
     }
 }
 
-async function updateUserIsVerified(data: UpdateUserIsVerified) {
+async function updateUserIsVerified(data: UpdateUserIsVerified): Promise<UserData> {
     try {
         const updatedUser = await db
             .update(users)
             .set({isVerified: data.isVerified})
             .where(eq(users.id, data.id))
+            .returning()
 
-        return updatedUser
+        return updatedUser[0]
     } catch (error) {
         console.error('Updating a user is_verified error:', error)
         throw error;
     }
 }
 
-async function updateUserIsReported(data: UpdateUserIsReported) {
+async function updateUserIsReported(data: UpdateUserIsReported): Promise<UserData> {
     try {
         const updatedUser = await db
             .update(users)
             .set({isReported: data.isReported})
             .where(eq(users.id, data.id))
+            .returning()
 
-        return updatedUser
+        return updatedUser[0]
     } catch (error) {
         console.error('Updating a user is_reported error:', error)
         throw error;
     }
 }
 
-async function updateUserIsActive(data: UpdateUserIsActive) {
+async function updateUserIsActive(data: UpdateUserIsActive): Promise<UserData> {
     try {
         const updatedUser = await db
             .update(users)
             .set({isActive: data.isActive})
             .where(eq(users.id, data.id))
+            .returning()
 
-        return updatedUser
+        return updatedUser[0]
     } catch (error) {
         console.error('Updating a user is_active error:', error)
         throw error;
     }
 }
 
-async function updateUserIsBlocked(data: UpdateUserIsBlocked) {
+async function updateUserIsBlocked(data: UpdateUserIsBlocked): Promise<UserData> {
     try {
         const updatedUser = await db
             .update(users)
             .set({isBlocked: data.isBlocked})
             .where(eq(users.id, data.id))
+            .returning()
 
-        return updatedUser
+        return updatedUser[0]
     } catch (error) {
         console.error('Updating a user is_blocked error:', error)
         throw error;
@@ -271,13 +273,14 @@ async function updateUserIsBlocked(data: UpdateUserIsBlocked) {
 
 // delete
 
-async function deleteUser(data: DeleteUser) {
+async function deleteUser(data: DeleteUser): Promise<UserData> {
     try {
         const deletedUser = await db
             .delete(users)
             .where(eq(users.id, data.id))
+            .returning()
 
-        return deletedUser
+        return deletedUser[0]
     } catch (error) {
         console.error('Deleting a user error:', error)
         throw error;
