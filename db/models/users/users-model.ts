@@ -270,6 +270,8 @@ export {
     createUser,
     getUser,
     getUserAvatarURL,
+    getUserByEmail,
+    getUserByNickname,
     updateUserNickname,
     updateUserEmail,
     updateUserPassword,
