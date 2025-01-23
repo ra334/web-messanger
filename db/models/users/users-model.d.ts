@@ -23,22 +23,16 @@ interface GetUser {
     id: string;
 }
 
-interface ReturnUserFirstName {
-    firstName: string;
+interface GetUserByEmail {
+    email: string;
+}
+
+interface GetUserByNickname {
+    nickName: string;
 }
 
 interface ReturnUserAvatarURL {
     avatarURL: string;
-}
-
-interface UpdateUserFirstName {
-    id: string;
-    firstName: string;
-}
-
-interface UpdateUserLastName {
-    id: string;
-    lastName: string;
 }
 
 interface UpdateUserNickname {
@@ -94,10 +88,9 @@ export {
     UserData,
     CreateUser,
     GetUser,
-    ReturnUserFirstName,
+    GetUserByEmail,
+    GetUserByNickname,
     ReturnUserAvatarURL,
-    UpdateUserFirstName,
-    UpdateUserLastName,
     UpdateUserNickname,
     UpdateUserEmail,
     UpdateUserPassword,

@@ -5,10 +5,9 @@ import {
     UserData,
     CreateUser,
     GetUser,
-    ReturnUserFirstName,
+    GetUserByEmail,
+    GetUserByNickname,
     ReturnUserAvatarURL,
-    UpdateUserFirstName,
-    UpdateUserLastName,
     UpdateUserNickname,
     UpdateUserEmail,
     UpdateUserPassword,
@@ -80,12 +79,38 @@ async function getUserAvatarURL(data: GetUser): Promise<ReturnUserAvatarURL> {
     }
 }
 
-async function getUserByEmail() {
+async function getUserByEmail(data: GetUserByEmail): Promise<UserData> {
+    try {
+        const user = await db.query.users.findFirst({
+            where: (eq(users.email, data.email))
+        })
 
+        if (!user) {
+            throw new Error('User not found');
+        }
+
+        return user;
+    } catch (error) {
+        console.error('Getting a user by email error:', error)
+        throw error;
+    }
 }
 
-async function getUserByNickname() {
+async function getUserByNickname(data: GetUserByNickname): Promise<UserData> {
+    try {
+        const user = await db.query.users.findFirst({
+            where: (eq(users.nickName, data.nickName))
+        })
 
+        if (!user) {
+            throw new Error('User not found');
+        }
+
+        return user
+    } catch (error) {
+        console.error('Getting a user by nickname error:', error)
+        throw error;
+    }
 }
 
 // update
