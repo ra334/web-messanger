@@ -27,8 +27,6 @@ async function createUser(data: CreateUser): Promise<UserData> {
     try {
         const newUser = await db.insert(users).values({
             firstName: data.firstName,
-            lastName: data.lastName,
-            nickName: data.nickName,
             email: data.email,
             password: data.password,
             avatarURL: data.avatarURL,
