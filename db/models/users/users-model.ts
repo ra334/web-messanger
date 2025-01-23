@@ -26,7 +26,7 @@ import {
 async function createUser(data: CreateUser): Promise<UserData> {
     try {
         const newUser = await db.insert(users).values({
-            firstName: data.firstName,
+            nickName: data.nickName,
             email: data.email,
             password: data.password,
             avatarURL: data.avatarURL,
@@ -58,28 +58,6 @@ async function getUser(data: GetUser): Promise<UserData> {
     }
 }
 
-async function getUserFirstName(data: GetUser): Promise<ReturnUserFirstName> {
-    try {
-
-        const firstName = await db.query.users.findFirst({
-            where: (eq(users.id, data.id)),
-            columns: {
-                firstName: true
-            }
-        })
-
-        if (!firstName) {
-            throw new Error('User not found');
-        }
-
-        return firstName
-
-    } catch (error) {
-        console.error('Getting a user first name error:', error)
-        throw error;
-    }
-}
-
 async function getUserAvatarURL(data: GetUser): Promise<ReturnUserAvatarURL> {
     try {
 
@@ -102,37 +80,15 @@ async function getUserAvatarURL(data: GetUser): Promise<ReturnUserAvatarURL> {
     }
 }
 
+async function getUserByEmail() {
+
+}
+
+async function getUserByNickname() {
+
+}
+
 // update
-
-async function updateUserFirstName(data: UpdateUserFirstName): Promise<UserData> {
-    try {
-        const updatedUser = await db
-            .update(users)
-            .set({firstName: data.firstName})
-            .where(eq(users.id, data.id))
-            .returning()
-
-        return updatedUser[0]
-    } catch (error) {
-        console.error('Updating a user first name error:', error)
-        throw error;
-    }
-}
-
-async function updateUserLastName(data: UpdateUserLastName): Promise<UserData> {
-    try {
-        const updatedUser = await db
-            .update(users)
-            .set({lastName: data.lastName})
-            .where(eq(users.id, data.id))
-            .returning()
-
-        return updatedUser[0]
-    } catch (error) {
-        console.error('Updating a user last name error:', error)
-        throw error;
-    }
-}
 
 async function updateUserNickname(data: UpdateUserNickname): Promise<UserData> {
     try {
@@ -288,10 +244,7 @@ async function deleteUser(data: DeleteUser): Promise<UserData> {
 export {
     createUser,
     getUser,
-    getUserFirstName,
     getUserAvatarURL,
-    updateUserFirstName,
-    updateUserLastName,
     updateUserNickname,
     updateUserEmail,
     updateUserPassword,

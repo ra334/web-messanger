@@ -1,8 +1,6 @@
 interface UserData {
     id: string;
-    firstName: string;
-    lastName: string | null;
-    nickName: string | null;
+    nickName: string;
     email: string;
     password: string;
     avatarURL: string;
@@ -15,7 +13,7 @@ interface UserData {
 }
 
 interface CreateUser {
-    firstName: string;
+    nickName: string;
     email: string;
     password: string;
     avatarURL: string;
