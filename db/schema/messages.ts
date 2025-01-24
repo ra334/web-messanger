@@ -1,12 +1,17 @@
-import {pgTable, varchar, boolean, timestamp, uuid } from "drizzle-orm/pg-core";
+import {pgTable, varchar, pgEnum, boolean, timestamp, uuid } from "drizzle-orm/pg-core";
 import { dialogs } from "./dialogs";
+import { medias } from "./medias";
 import { users } from "./users";
+
+export const messageType = pgEnum('message_type', ['text', 'media'])
 
 export const messages = pgTable('messages', {
     id: uuid('id').primaryKey().defaultRandom(),
     dialogID: uuid('dialog_id').notNull().references(() => dialogs.id),
     senderID: uuid('sender_id').notNull().references(() => users.id),
-    text: varchar('text', {length: 255}).notNull(),
+    messageType: messageType().notNull(),
+    mediaID: uuid('media_id').references(() => medias.id),
+    text: varchar('text', {length: 255}),
     is_edited: boolean('is_edited').notNull().default(false),
     is_readed: boolean('is_readed').notNull().default(false),
     createdAt: timestamp('created_at').notNull().defaultNow()
