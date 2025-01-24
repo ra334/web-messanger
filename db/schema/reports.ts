@@ -34,6 +34,6 @@ export const reports = pgTable("reports", {
     reportedUserID: uuid('reported_user_id').notNull().references(() => users.id),
     reportType: reportEnum().notNull(),
     notes: text('notes').notNull(),
-    status: statusEnum().notNull().default('pending'),
+    status: statusEnum().notNull(),
     createdAt: timestamp('created_at').notNull().defaultNow(),
 });
