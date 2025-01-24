@@ -2,7 +2,7 @@ interface UserData {
     id: string;
     nickName: string;
     email: string;
-    password: string;
+    password: string | null;
     avatarURL: string;
     status: 'offline' | 'online' | 'away';
     isVerified: boolean;
@@ -15,7 +15,7 @@ interface UserData {
 interface CreateUser {
     nickName: string;
     email: string;
-    password: string;
+    password: string | null;
     avatarURL: string;
 }
 
