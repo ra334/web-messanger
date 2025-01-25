@@ -9,79 +9,75 @@ import {
     DeleteBlockedUser
 } from './blockedUsers-model.d'
 
+class BlockedUsersModel {
+    // create
 
-// create
+    async createBlockedUser(data: CreateBlockedUser): Promise<BlockedUser> {
+        try {
+            const blockedUser = await db.insert(blockedUsers).values({
+                blockedID: data.blockedID
+            }).returning()
 
-async function createBlockedUser(data: CreateBlockedUser): Promise<BlockedUser> {
-    try {
-        const blockedUser = await db.insert(blockedUsers).values({
-            blockedID: data.blockedID
-        }).returning()
-
-        return blockedUser[0]
-    } catch (error) {
-        console.error('Creating blocked user error:', error)
-        throw error
+            return blockedUser[0]
+        } catch (error) {
+            console.error('Creating blocked user error:', error)
+            throw error
+        }
     }
-}
 
-// read
+    // read
 
-async function getBlockedUser(data: GetBlockdeUser): Promise<BlockedUser> {
-    try {
-        const blockedUser = await db.query.blockedUsers.findFirst({
-            where: (eq(blockedUsers.id, data.id))
-        })
+    async getBlockedUser(data: GetBlockdeUser): Promise<BlockedUser> {
+        try {
+            const blockedUser = await db.query.blockedUsers.findFirst({
+                where: (eq(blockedUsers.id, data.id))
+            })
 
-        if (!blockedUser) {
-            throw new Error('Blocked user not found')
+            if (!blockedUser) {
+                throw new Error('Blocked user not found')
+            }
+
+            return blockedUser
+        } catch (error) {
+            console.error('Getting blocked user error:', error)
+            throw error
+        }
+    }
+
+    async getBlockdeUsers(data: GetBlockedUsers): Promise<BlockedUser[]> {
+        try {
+            const users = await db.query.blockedUsers.findMany({
+                limit: data.limit,
+                offset: data.offset
+            })
+
+            return users
+        } catch (error) {
+            console.error('Getting blocked users error:', error)
+            throw error
         }
 
-        return blockedUser
-    } catch (error) {
-        console.error('Getting blocked user error:', error)
-        throw error
+    }
+
+    // update
+
+
+
+    // delete
+
+    async deleteBlockedUser(data: DeleteBlockedUser): Promise<BlockedUser> {
+        try {
+            const user = await db
+                .delete(blockedUsers)
+                .where(eq(blockedUsers.id, data.id))
+                .returning()
+
+            return user[0]
+        } catch (error) {
+            console.error('Deleting blocked user error:', error)
+            throw error
+        }
     }
 }
 
-async function getBlockdeUsers(data: GetBlockedUsers): Promise<BlockedUser[]> {
-    try {
-        const users = await db.query.blockedUsers.findMany({
-            limit: data.limit,
-            offset: data.offset
-        })
-
-        return users
-    } catch (error) {
-        console.error('Getting blocked users error:', error)
-        throw error
-    }
-
-}
-
-// update
-
-
-
-// delete
-
-async function deleteBlockedUser(data: DeleteBlockedUser): Promise<BlockedUser> {
-    try {
-        const user = await db
-            .delete(blockedUsers)
-            .where(eq(blockedUsers.id, data.id))
-            .returning()
-
-        return user[0]
-    } catch (error) {
-        console.error('Deleting blocked user error:', error)
-        throw error
-    }
-}
-
-export {
-    createBlockedUser,
-    getBlockedUser,
-    getBlockdeUsers,
-    deleteBlockedUser
-}
+export default new BlockedUsersModel()
