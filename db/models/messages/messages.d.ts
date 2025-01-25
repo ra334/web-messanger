@@ -2,7 +2,9 @@ interface Message {
     id: string;
     dialogID: string;
     senderID: string;
-    text: string;
+    messageType: 'text' | 'media';
+    mediaID: string | null;
+    text: string | null;
     is_edited: boolean;
     is_readed: boolean;
     createdAt: Date;
@@ -11,6 +13,8 @@ interface Message {
 interface CreateMessage {
     dialogID: string;
     senderID: string;
+    messageType: 'text' | 'media';
+    mediaID: string | null;
     text: string;
 }
 
