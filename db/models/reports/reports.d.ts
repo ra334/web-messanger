@@ -35,6 +35,7 @@ interface CreateReport {
     userID: string;
     reportedUserID: string;
     reportType: reportTypes;
+    status: reportStatuses;
     notes: string;
 }
 
