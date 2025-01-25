@@ -11,6 +11,8 @@ import * as friends from './schema/friends'
 import * as dialogs from './schema/dialogs'
 import * as devices from './schema/devices'
 import * as blockedUsers from './schema/blockedUsers'
+import * as tokens from './schema/tokens'
+import * as medias from './schema/medias'
 
 export const db = drizzle(
     process.env.DATABASE_URL!,
@@ -25,7 +27,9 @@ export const db = drizzle(
             ...friends,
             ...dialogs,
             ...devices,
-            ...blockedUsers
+            ...blockedUsers,
+            ...tokens,
+            ...medias
         }
     }
 );
