@@ -2,7 +2,7 @@ import 'dotenv/config';
 import { drizzle } from 'drizzle-orm/node-postgres';
 
 import * as users from './schema/users'
-import * as usersVerification from './schema/usersVerification'
+import * as usersVerification from './schema/userVerifications'
 import * as reports from './schema/reports'
 import * as messages from './schema/messages'
 import * as groups from './schema/groups'
