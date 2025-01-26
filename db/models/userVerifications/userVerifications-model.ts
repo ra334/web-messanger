@@ -50,7 +50,7 @@ class UserVerifivationsModel {
     
     // update
     
-    async updateVerificationCode(data: UpdateUserVerification) {
+    async updateVerificationCode(data: UpdateUserVerification): Promise<UsesrVerification> {
         try {
             const userVerification = await db
                 .update(userVerifications)
@@ -58,8 +58,9 @@ class UserVerifivationsModel {
                     verificationCode: data.verificationCode
                 })
                 .where(eq(userVerifications.userID, data.userID))
+                .returning()
     
-            return userVerification
+            return userVerification[0]
     
         } catch (error) {
             console.error('Updating userverification code error:', error)
@@ -67,7 +68,7 @@ class UserVerifivationsModel {
         }
     }
     
-    async updateIsUsed(data: UpdateIsUsed) {
+    async updateIsUsed(data: UpdateIsUsed): Promise<UsesrVerification> {
         try {
             const userVerification = await db
                 .update(userVerifications)
@@ -75,8 +76,9 @@ class UserVerifivationsModel {
                     isUsed: data.isUsed
                 })
                 .where(eq(userVerifications.userID, data.userID))
+                .returning()
     
-            return userVerification
+            return userVerification[0]
     
         } catch (error) {
             console.error('Updating userverification isUsed error:', error)
@@ -86,13 +88,14 @@ class UserVerifivationsModel {
     
     // delete
     
-    async deleteUserVerification(data: DeleteUserVerification) {
+    async deleteUserVerification(data: DeleteUserVerification): Promise<UsesrVerification> {
         try {
             const userVerification = await db
                 .delete(userVerifications)
                 .where(eq(userVerifications.userID, data.userID))
+                .returning()
     
-            return userVerification
+            return userVerification[0]
     
         } catch (error) {
             console.error('Deleting userverification error:', error)
