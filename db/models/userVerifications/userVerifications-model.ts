@@ -1,5 +1,5 @@
 import { db } from '@/db/postgress'
-import { userVerifications } from '@/db/schema/usersVerification'
+import { userVerifications } from '@/db/schema/userVerifications'
 import { eq } from 'drizzle-orm'
 import {
     UsesrVerification,
@@ -8,7 +8,7 @@ import {
     UpdateUserVerification,
     UpdateIsUsed,
     DeleteUserVerification
-} from './usersVerificatons'
+} from './userVerificatons'
 
 // create
 
