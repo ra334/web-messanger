@@ -1,4 +1,4 @@
-import userVerification from '@/db/models/userVerifications/userVerifications-model'
+import userVerification from '@/db/models/userVerifications-model'
 import {
     UsesrVerification,
     CreateUserVerification,
@@ -6,22 +6,22 @@ import {
     UpdateUserVerification,
     UpdateIsUsed,
     DeleteUserVerification
-} from '@/db/models/userVerifications/userVerificatons'
+} from '@/types/userVerificatons'
 
 class UserVerificaionsService {
-    async #getUserVerification(data: GetUserVerification): Promise<UsesrVerification> {
+    async getUserVerification(data: GetUserVerification): Promise<UsesrVerification> {
         const verification = await userVerification.getUserVerification(data)
 
         return verification
     }
 
-    async #updateIsUsed(data: UpdateIsUsed): Promise<UsesrVerification> {
+    async updateIsUsed(data: UpdateIsUsed): Promise<UsesrVerification> {
         const verification = await userVerification.updateIsUsed(data)
 
         return verification
     }
 
-    async #deleteUserVerification(data: DeleteUserVerification): Promise<UsesrVerification> {
+    async deleteUserVerification(data: DeleteUserVerification): Promise<UsesrVerification> {
         const verification = await userVerification.deleteUserVerification(data)
 
         return verification
@@ -39,7 +39,7 @@ class UserVerificaionsService {
     }
 
     async validateVerificationCode(userID: string, code: string) {
-        const verification = await this.#getUserVerification({userID})
+        const verification = await this.getUserVerification({userID})
 
         if (verification.isUsed) {
             throw new Error('Verification code is already used')
@@ -49,7 +49,7 @@ class UserVerificaionsService {
             throw new Error('Invalid verification code')
         }
 
-        this.#updateIsUsed({userID, isUsed: true})
+        this.updateIsUsed({userID, isUsed: true})
 
         return verification
     }
