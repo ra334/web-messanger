@@ -27,8 +27,13 @@ class ReportsModel {
             }).returning()
 
             return report[0]
-        } catch (error) {
-            console.error('Creating report error: ', error)
+        } catch (error: any) { 
+            if (error.message == 'insert or update on table "reports" violates foreign key constraint "reports_user_id_users_id_fk"') {
+                throw new Error("User does't exist")
+            } else if (error.message == 'insert or update on table "reports" violates foreign key constraint "reports_reported_user_id_users_id_fk"') {
+                throw new Error("Reported user does't exist")
+            }
+
             throw error
         }
     }
@@ -36,109 +41,90 @@ class ReportsModel {
     // read
 
     async getReport(data: GetReport): Promise<Report> {
-        try {
-            const report = await db.query.reports.findFirst({
-                where: (eq(reports.id, data.id))
-            })
+        const report = await db.query.reports.findFirst({
+            where: (eq(reports.id, data.id))
+        })
 
-            if (!report) {
-                throw new Error('Report not found')
-            }
-
-            return report
-        } catch (error) {
-            console.error('Getting report error: ', error)
-            throw error
+        if (!report) {
+            throw new Error('Report not found')
         }
+
+        return report
     }
 
     async getReportsOnUser(data: GetReportsOnUser): Promise<Report[]> {
-        try {
-            const userReports = await db.query.reports.findMany({
-                where: (eq(reports.reportedUserID, data.reportedUserID))
-            })
+        const userReports = await db.query.reports.findMany({
+            where: (eq(reports.reportedUserID, data.reportedUserID))
+        })
 
-            return userReports
-        } catch (error) {
-            console.error('Getting reports on user error: ', error)
-            throw error
-        }
+        return userReports
     }
 
     async getReportsFromUser(data: GetReportsFromUser): Promise<Report[]> {
-        try {
-            const reportsFromUser = await db.query.reports.findMany({
-                where: (eq(reports.userID, data.userID))
-            })
+        const reportsFromUser = await db.query.reports.findMany({
+            where: (eq(reports.userID, data.userID))
+        })
 
-            return reportsFromUser
-        } catch (error) {
-            console.error('Getting reports from user error: ', error)
-            throw error
-        }
+        return reportsFromUser
     }
 
     // update
 
     async updateReportType(data: UpdateReportType): Promise<Report> {
-        try {
-            const reportType = await db
-                .update(reports)
-                .set({reportType: data.reportedType})
-                .where(eq(reports.id, data.id))
-                .returning()
+        const reportType = await db
+            .update(reports)
+            .set({reportType: data.reportedType})
+            .where(eq(reports.id, data.id))
+            .returning()
 
-            return reportType[0]
-        } catch (error) {
-            console.error('Updating report type error: ', error)
-            throw error
+        if (!reportType[0]) {
+            throw new Error('Report not found')
         }
+
+        return reportType[0]
     }
 
     async updateReportNotes(data: UpdateReportNotes): Promise<Report> {
-        try {
-            const reportNotes = await db
-                .update(reports)
-                .set({notes: data.notes})
-                .where(eq(reports.id, data.id))
-                .returning()
+        const reportNotes = await db
+            .update(reports)
+            .set({notes: data.notes})
+            .where(eq(reports.id, data.id))
+            .returning()
 
-            return reportNotes[0]
-        } catch (error) {
-            console.error('Updating report notes error: ', error)
-            throw error
+        if (!reportNotes[0]) {
+            throw new Error('Report not found')
         }
+
+        return reportNotes[0]
     }
 
     async updateReportStatus(data: UpdateReportStatus): Promise<Report> {
-        try {
-            const reportStatus = await db
-                .update(reports)
-                .set({status: data.status})
-                .where(eq(reports.id, data.id))
-                .returning()
+        const reportStatus = await db
+            .update(reports)
+            .set({status: data.status})
+            .where(eq(reports.id, data.id))
+            .returning()
 
-            return reportStatus[0]
-        } catch (error) {
-            console.error('Updating report status error: ', error)
-            throw error
+        if (!reportStatus[0]) {
+            throw new Error('Report not found')
         }
+
+        return reportStatus[0]
     }
 
     // delete
 
     async deleteReport(data: DeleteReport): Promise<Report> {
-        try {
-            const report = await db
-                .delete(reports)
-                .where(eq(reports.id, data.id))
-                .returning()
+        const report = await db
+            .delete(reports)
+            .where(eq(reports.id, data.id))
+            .returning()
 
-            return report[0]
-        } catch (error) {
-            console.error('Deleting report error: ', error)
-            throw error
+        if (!report[0]) {
+            throw new Error('Report not found')
         }
+
+        return report[0]
     }
 }
 
