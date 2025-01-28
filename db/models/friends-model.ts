@@ -1,14 +1,14 @@
 import { db } from '@/db/postgress'
 import { friends } from '@/db/schema/friends'
 import { eq } from 'drizzle-orm'
-import {
+import type {
     Friend,
     CreateFriend,
     GetFriend,
     GetFriends,
     UpdateFriendName,
     DeleteFriend
-} from './friends-model.d'
+} from '@/types/friends'
 
 class FriendsModel {
     // create

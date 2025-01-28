@@ -1,7 +1,7 @@
 import { db } from '@/db/postgress'
 import { dialogs } from '@/db/schema/dialogs'
 import { eq } from 'drizzle-orm'
-import {
+import type {
     Dialog,
     CreateDialog,
     GetDialog,
@@ -10,7 +10,7 @@ import {
     UpdateIsDeletedForReceiver,
     UpdateLastMessage,
     DeleteDialog
-} from './dialogs-model.d'
+} from '@/types/dialogs'
 
 class DialogsModel {
     // create

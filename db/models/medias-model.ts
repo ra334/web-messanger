@@ -11,7 +11,7 @@ import type {
     UpdateMediaSize,
     UpdateMediaMetadata,
     DeleteMedia
-} from './media'
+} from '@/types/media'
 
 class MediasModel {
     // create

@@ -11,7 +11,7 @@ import type {
     UpdateReportNotes,
     UpdateReportStatus,
     DeleteReport
-} from './reports'
+} from '@/types/reports'
 
 class ReportsModel {
     // create

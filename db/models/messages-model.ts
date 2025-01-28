@@ -11,7 +11,7 @@ import type {
     UpdateMessageIsEdited,
     UpdateMessageIsReaded,
     DeleteMessage
-} from './messages'
+} from '@/types/messages'
 
 class MessagesModel {
     // create

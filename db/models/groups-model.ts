@@ -1,7 +1,7 @@
 import { db } from '@/db/postgress'
 import { groups } from '@/db/schema/groups'
 import { eq } from 'drizzle-orm'
-import {
+import type {
     Group,
     CreateGroup,
     GetGroup,
@@ -12,7 +12,7 @@ import {
     UpdateGroupAvatarURL,
     UpdateGroupMemberCount,
     DeleteGroup
-} from './groups-model.d'
+} from '@/types/groups'
 
 class GroupsModel {
     // create

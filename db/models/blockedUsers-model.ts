@@ -1,13 +1,13 @@
 import { db } from '@/db/postgress'
 import { blockedUsers } from '@/db/schema/blockedUsers'
 import { eq } from 'drizzle-orm'
-import {
+import type {
     BlockedUser,
     CreateBlockedUser,
     GetBlockdeUser,
     GetBlockedUsers,
     DeleteBlockedUser
-} from './blockedUsers-model.d'
+} from '@/types/blockedUsers'
 
 class BlockedUsersModel {
     // create

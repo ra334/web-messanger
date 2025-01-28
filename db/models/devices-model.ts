@@ -1,7 +1,7 @@
 import { db } from '@/db/postgress'
 import { devices } from '@/db/schema/devices'
 import { eq } from 'drizzle-orm'
-import {
+import type {
     Device,
     CreateDevice,
     GetDevice,
@@ -9,7 +9,7 @@ import {
     UpdateDevicesIsActive,
     UpdateDeviceLastAccessedAt,
     DeleteDevice
-} from './devices-model.d'
+} from '@/types/devices'
 
 class DevicesModel {
     // craete

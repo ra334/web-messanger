@@ -1,14 +1,14 @@
 import { db } from '@/db/postgress'
 import { groupsMembers } from '@/db/schema/groupMembers'
 import { eq } from 'drizzle-orm'
-import {
+import type {
     GroupMembers,
     CreateGroupMember,
     GetGroupMember,
     GetGroupMembers,
     UpdateGroupIsAdmin,
     DeleteGroupMember
-} from './groupMembers-model.d'
+} from '@/types/groupMembers'
 
 class GroupMembersModel {
     // creat

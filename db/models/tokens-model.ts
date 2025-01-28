@@ -7,7 +7,7 @@ import type {
     GetToken,
     GetUserTokens,
     DeleteToken
-} from './tokens'
+} from '@/types/tokens'
 
 class TokensModel {
     // create

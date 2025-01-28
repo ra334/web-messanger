@@ -1,14 +1,14 @@
 import { db } from '@/db/postgress'
 import { userVerifications } from '@/db/schema/userVerifications'
 import { eq } from 'drizzle-orm'
-import {
+import type {
     UsesrVerification,
     CreateUserVerification,
     GetUserVerification,
     UpdateUserVerification,
     UpdateIsUsed,
     DeleteUserVerification
-} from './userVerificatons'
+} from '@/types/userVerificatons'
 
 // create
 
