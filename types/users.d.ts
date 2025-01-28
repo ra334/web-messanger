@@ -19,6 +19,12 @@ interface CreateUser {
     avatarURL: string;
 }
 
+interface LoginUser {
+    nickName: string
+    email: string
+    password: string
+}
+
 interface GetUser {
     id: string;
 }
@@ -100,5 +106,6 @@ export {
     UpdateUserIsReported,
     UpdateUserIsActive,
     UpdateUserIsBlocked,
-    DeleteUser
+    DeleteUser,
+    LoginUser
 }

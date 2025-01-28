@@ -1,5 +1,6 @@
 import usersModel from '@/db/models/users-model'
-
+import 'dotenv/config'
+import bcrypt from 'bcrypt'
 import {
     UserData,
     CreateUser,
@@ -16,17 +17,9 @@ import {
     UpdateUserIsReported,
     UpdateUserIsActive,
     UpdateUserIsBlocked,
-    DeleteUser
+    DeleteUser,
+    LoginUser
 } from '@/types/users'
-
-import 'dotenv/config'
-import bcrypt from 'bcrypt'
-
-interface LoginUser {
-    nickName: string
-    email: string
-    password: string
-}
 
 
 class UsersService {
