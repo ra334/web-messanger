@@ -1,20 +1,4 @@
-import {
-    createUser,
-    getUser,
-    getUserByEmail,
-    getUserByNickname,
-    getUserAvatarURL,
-    updateUserNickname,
-    updateUserEmail,
-    updateUserPassword,
-    updateUserAvatarURL,
-    updateUserStatus,
-    updateUserIsVerified,
-    updateUserIsReported,
-    updateUserIsActive,
-    updateUserIsBlocked,
-    deleteUser
-} from '@/db/models/users/users-model'
+import usersModel from '@/db/models/users-model'
 
 import {
     UserData,
@@ -33,112 +17,212 @@ import {
     UpdateUserIsActive,
     UpdateUserIsBlocked,
     DeleteUser
-} from '@/db/models/users/users-model.d'
-
-import { LoginUser } from './users-service.d'
+} from '@/types/users'
 
 import 'dotenv/config'
 import bcrypt from 'bcrypt'
 
-
-function nickNameValidation(nickname: string) {
-    if (!nickname) {
-        throw new Error('Nickname is required')
-    }
-
-    if (nickname.length > 50) {
-        throw new Error('Nickname is too long')
-    }
-
-    return true
+interface LoginUser {
+    nickName: string
+    email: string
+    password: string
 }
 
-function emailValidation(email: string) {
-    const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/
 
-    if (!email) {
-        throw new Error('Email is required')
+class UsersService {
+    #nickNameValidation(nickname: string) {
+        if (!nickname) {
+            throw new Error('Nickname is required')
+        }
+    
+        if (nickname.length > 50) {
+            throw new Error('Nickname is too long')
+        }
+    
+        return true
+    }
+    
+    #emailValidation(email: string) {
+        const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/
+    
+        if (!email) {
+            throw new Error('Email is required')
+        }
+    
+        if (!emailRegex.test(email)) {
+            throw new Error('Invalid email')
+        }
+    
+        if (email.length > 255) {
+            throw new Error('Email is too long')
+        }
+    
+        return true
+    }
+    
+    #passwordValidation(password: string) {
+        if (!password) {
+            throw new Error('Password is required')
+        }
+    
+        if (password.length < 8) {
+            throw new Error('Password is too short')
+        }
+    
+        return true
+    }
+    
+    #avatarURLValidation(avatarURL: string) {
+        if (!avatarURL) {
+            throw new Error('Avatar URL is required')
+        }
+    
+        if (avatarURL.length > 255) {
+            throw new Error('Avatar URL is too long')
+        }
+    
+        return true
+    }
+    
+    async registerUser(data: CreateUser): Promise<UserData> {
+        let user: UserData
+        const saltRounds = Number(process.env.SALT_ROUNDS)
+    
+        this.#nickNameValidation(data.nickName)
+        this.#emailValidation(data.email)
+        this.#avatarURLValidation(data.avatarURL)
+    
+        if (data.password) {
+            this.#passwordValidation(data.password)
+            const hashedPassword = await bcrypt.hash(data.password, saltRounds)
+            user = await usersModel.createUser({
+                nickName: data.nickName,
+                email: data.email,
+                password: hashedPassword,
+                avatarURL: data.avatarURL
+            })
+
+            return user
+        }
+    
+        user = await usersModel.createUser({
+            nickName: data.nickName,
+            email: data.email,
+            password: '',
+            avatarURL: data.avatarURL
+        })
+    
+        return user
+    }
+    
+    async loginUser(data: LoginUser): Promise<UserData> {
+        let user: UserData
+        let comparePassword = false
+    
+        if (data.nickName) {
+            this.#nickNameValidation(data.nickName)
+            user = await usersModel.getUserByNickname({nickName: data.nickName})
+        } else {
+            this.#emailValidation(data.email)
+            user = await usersModel.getUserByEmail({email: data.email})
+        }
+    
+        if (!user.password) {
+            throw new Error("User doesn't have a password")
+        }
+
+        comparePassword = await bcrypt.compare(data.password, user.password)
+
+        if (!comparePassword) {
+            throw new Error('Invalid password')
+        }
+
+        return user
     }
 
-    if (!emailRegex.test(email)) {
-        throw new Error('Invalid email')
+    async getUser(data: GetUser): Promise<UserData> {
+        const user = await usersModel.getUser(data)
+
+        return user
     }
 
-    if (email.length > 255) {
-        throw new Error('Email is too long')
+    async getUserAvatarURL(data: GetUser): Promise<ReturnUserAvatarURL> {
+        const avatarURL = await usersModel.getUserAvatarURL(data)
+
+        return avatarURL
     }
 
-    return true
+    async getUserByEmail(data: GetUserByEmail): Promise<UserData> {
+        const user = await usersModel.getUserByEmail(data)
+
+        return user
+    }
+
+    async getUserByNickname(data: GetUserByNickname): Promise<UserData> {
+        const user = await usersModel.getUserByNickname(data)
+
+        return user
+    }
+
+    async updateUserNickname(data: UpdateUserNickname): Promise<UserData> {
+        const user = await usersModel.updateUserNickname(data)
+
+        return user
+    }
+
+    async updateUserEmail(data: UpdateUserEmail): Promise<UserData> {
+        const user = await usersModel.updateUserEmail(data)
+
+        return user
+    }
+
+    async updateUserPassword(data: UpdateUserPassword): Promise<UserData> {
+        const user = await usersModel.updateUserPassword(data)
+
+        return user
+    }
+
+    async updateUserAvatarURL(data: UpdateUserAvatarURL): Promise<UserData> {
+        const user = await usersModel.updateUserAvatarURL(data)
+
+        return user
+    }
+
+    async updateUserStatus(data: UpdateUserStatus): Promise<UserData> {
+        const user = await usersModel.updateUserStatus(data)
+
+        return user
+    }
+
+    async updateUserIsVerified(data: UpdateUserIsVerified): Promise<UserData> {
+        const user = await usersModel.updateUserIsVerified(data)
+
+        return user
+    }
+
+    async updateUserIsReported(data: UpdateUserIsReported): Promise<UserData> {
+        const user = await usersModel.updateUserIsReported(data)
+
+        return user
+    }
+
+    async updateUserIsActive(data: UpdateUserIsActive): Promise<UserData> {
+        const user = await usersModel.updateUserIsActive(data)
+
+        return user
+    }
+
+    async updateUserIsBlocked(data: UpdateUserIsBlocked): Promise<UserData> {
+        const user = await usersModel.updateUserIsBlocked(data)
+
+        return user
+    }
+
+    async deleteUser(data: DeleteUser): Promise<UserData> {
+        const user = await usersModel.deleteUser(data)
+
+        return user
+    }
 }
 
-function passwordValidation(password: string) {
-    if (!password) {
-        throw new Error('Password is required')
-    }
-
-    if (password.length < 8) {
-        throw new Error('Password is too short')
-    }
-
-    return true
-}
-
-function avatarURLValidation(avatarURL: string) {
-    if (!avatarURL) {
-        throw new Error('Avatar URL is required')
-    }
-
-    if (avatarURL.length > 255) {
-        throw new Error('Avatar URL is too long')
-    }
-
-    return true
-}
-
-async function registerUser(data: CreateUser) {
-    const saltRounds = Number(process.env.SALT_ROUNDS)
-    const hashedPassword = await bcrypt.hash(data.password, saltRounds)
-
-    nickNameValidation(data.nickName)
-    emailValidation(data.email)
-    passwordValidation(data.password)
-    avatarURLValidation(data.avatarURL)
-
-    const user = await createUser({
-        nickName: data.nickName,
-        email: data.email,
-        password: hashedPassword,
-        avatarURL: data.avatarURL
-    })
-
-    return user
-}
-
-async function loginUser(data: LoginUser) {
-    let user: UserData
-    let comparePassword = false
-
-    if (data.nickName) {
-        nickNameValidation(data.nickName)
-        user = await getUserByNickname({nickName: data.nickName})
-    } else {
-        emailValidation(data.email)
-        user = await getUserByEmail({email: data.email})
-    }
-
-    comparePassword = await bcrypt.compare(data.password, user.password)
-
-}
-
-async function forgotPassword(data: GetUserByEmail) {
-    emailValidation(data.email)
-
-    const user = await getUserByEmail(data)
-
-}
-
-export {
-    registerUser,
-    loginUser,
-    forgotPassword
-}
+export default new UsersService()
