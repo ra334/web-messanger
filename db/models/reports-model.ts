@@ -52,7 +52,7 @@ class ReportsModel {
         }
     }
 
-    async getReportsOnUser(data: GetReportsOnUser) {
+    async getReportsOnUser(data: GetReportsOnUser): Promise<Report[]> {
         try {
             const userReports = await db.query.reports.findMany({
                 where: (eq(reports.reportedUserID, data.reportedUserID))
@@ -65,7 +65,7 @@ class ReportsModel {
         }
     }
 
-    async getReportsFromUser(data: GetReportsFromUser) {
+    async getReportsFromUser(data: GetReportsFromUser): Promise<Report[]> {
         try {
             const reportsFromUser = await db.query.reports.findMany({
                 where: (eq(reports.userID, data.userID))
@@ -80,42 +80,45 @@ class ReportsModel {
 
     // update
 
-    async updateReportType(data: UpdateReportType) {
+    async updateReportType(data: UpdateReportType): Promise<Report> {
         try {
             const reportType = await db
                 .update(reports)
                 .set({reportType: data.reportedType})
                 .where(eq(reports.id, data.id))
+                .returning()
 
-            return reportType
+            return reportType[0]
         } catch (error) {
             console.error('Updating report type error: ', error)
             throw error
         }
     }
 
-    async updateReportNotes(data: UpdateReportNotes) {
+    async updateReportNotes(data: UpdateReportNotes): Promise<Report> {
         try {
             const reportNotes = await db
                 .update(reports)
                 .set({notes: data.notes})
                 .where(eq(reports.id, data.id))
+                .returning()
 
-            return reportNotes
+            return reportNotes[0]
         } catch (error) {
             console.error('Updating report notes error: ', error)
             throw error
         }
     }
 
-    async updateReportStatus(data: UpdateReportStatus) {
+    async updateReportStatus(data: UpdateReportStatus): Promise<Report> {
         try {
             const reportStatus = await db
                 .update(reports)
                 .set({status: data.status})
                 .where(eq(reports.id, data.id))
+                .returning()
 
-            return reportStatus
+            return reportStatus[0]
         } catch (error) {
             console.error('Updating report status error: ', error)
             throw error
@@ -124,15 +127,14 @@ class ReportsModel {
 
     // delete
 
-    async deleteReport(data: DeleteReport) {
+    async deleteReport(data: DeleteReport): Promise<Report> {
         try {
             const report = await db
                 .delete(reports)
                 .where(eq(reports.id, data.id))
+                .returning()
 
-            return report
-
-            return report
+            return report[0]
         } catch (error) {
             console.error('Deleting report error: ', error)
             throw error
