@@ -28,8 +28,17 @@ class MessagesModel {
 
             return newMessage[0]
 
-        } catch (error) {
-            console.error('Creating a message error:', error)
+        } catch (error: any) {
+
+            const senderError = 'insert or update on table "messages" violates foreign key constraint "messages_sender_id_users_id_fk"'
+            const dialogError = 'insert or update on table "messages" violates foreign key constraint "messages_dialog_id_dialogs_id_fk"'
+
+            if (error.message == dialogError) {
+                throw new Error('Dialog not found')
+            } else if (error.message == senderError) {
+                throw new Error('Sender not found')
+            }
+
             throw error;
         }
 
@@ -38,111 +47,105 @@ class MessagesModel {
     // read
 
     async getMessage(data: GetMessage): Promise<Message> {
-        try {
-            const message = await db.query.messages.findFirst({
-                where: (eq(messages.id, data.id))
-            })
+        const message = await db.query.messages.findFirst({
+            where: (eq(messages.id, data.id))
+        })
 
-            if (!message) {
-                throw new Error('Message not found')
-            }
-
-            return message
-        } catch (error) {
-            console.error('Getting a message error:', error)
-            throw error;
+        if (!message) {
+            throw new Error('Message not found')
         }
+
+        return message
     }
 
-    async getMessagesFromDialog(data: GetMessagesFromDialog) {
-        try {
-            const messagesFromDialog = db.query.messages.findMany({
-                where: (eq(messages.dialogID, data.dialogID))
-            })
+    async getMessagesFromDialog(data: GetMessagesFromDialog): Promise<Message[]> {
+        const messagesFromDialog = await db.query.messages.findMany({
+            where: (eq(messages.dialogID, data.dialogID))
+        })
 
-            return messagesFromDialog
-        } catch (error) {
-            console.error('Getting messages from dialog error:', error)
-            throw error;
+        if (!messagesFromDialog.length) {
+            throw new Error('Messages not found')
         }
+
+        return messagesFromDialog
     }
 
-    async getMessagesFromUser(data: GetMessagesFromUser) {
-        try {
-            const messagesFromUser = db.query.messages.findMany({
-                where: (eq(messages.senderID, data.userID))
-            })
+    async getMessagesFromUser(data: GetMessagesFromUser): Promise<Message[]> {
+        const messagesFromUser = await db.query.messages.findMany({
+            where: (eq(messages.senderID, data.userID))
+        })
 
-            return messagesFromUser
-        } catch (error) {
-            console.error('Getting messages from user error:', error)
-            throw error;
+        if (!messagesFromUser.length) {
+            throw new Error('Messages not found')
         }
+
+        return messagesFromUser
     }
 
 
     // update
 
-    async updateMessageText(data: UpdateMessageText) {
-        try {
-            const message = await db
-                .update(messages)
-                .set({
-                    text: data.text
-                })
-                .where(eq(messages.id, data.id))
+    async updateMessageText(data: UpdateMessageText): Promise<Message> {
+        const message = await db
+            .update(messages)
+            .set({
+                text: data.text
+            })
+            .where(eq(messages.id, data.id))
+            .returning()
 
-            return message
+        if (!message.length) {
+            throw new Error('Message not found')
+        }
 
-        } catch (error) {
-            console.error('Updating message text error:', error)
-            throw error;
-        }   
+        return message[0] 
     }
 
-    async updateMessageIsEdited(data: UpdateMessageIsEdited) {
-        try {
-            const message = await db
-                .update(messages)
-                .set({
-                    is_edited: data.isEdited
-                })
-                .where(eq(messages.id, data.id))
+    async updateMessageIsEdited(data: UpdateMessageIsEdited): Promise<Message> {
+        const message = await db
+            .update(messages)
+            .set({
+                is_edited: data.isEdited
+            })
+            .where(eq(messages.id, data.id))
+            .returning()
 
-            return message
-        } catch (error) {
-            console.error('Updating message is_edited error:', error)
-            throw error;
+        if (!message.length) {
+            throw new Error('Message not found')
         }
+
+        return message[0]
     }
 
-    async updateMessageIsReaded(data: UpdateMessageIsReaded) {
-        try {
-            const messageIsReaded = await db
-                .update(messages)
-                .set({
-                    is_readed: data.isReaded
-                })
-                .where(eq(messages.id, data.id))
-        } catch (error) {
-            console.error('Updating message is_readed error:', error)
-            throw error;
+    async updateMessageIsReaded(data: UpdateMessageIsReaded): Promise<Message> {
+        const messageIsReaded = await db
+            .update(messages)
+            .set({
+                is_readed: data.isReaded
+            })
+            .where(eq(messages.id, data.id))
+            .returning()
+
+        if (!messageIsReaded.length) {
+            throw new Error('Message not found')
         }
+
+        return messageIsReaded[0]
     }
 
     // delete
 
-    async deleteMessage(data: DeleteMessage) {
-        try {
-            const deletedMessage = await db
-                .delete(messages)
-                .where(eq(messages.id, data.id))
+    async deleteMessage(data: DeleteMessage): Promise<Message> {
+        const deletedMessage = await db
+            .delete(messages)
+            .where(eq(messages.id, data.id))
+            .returning()
 
-            return deletedMessage
-        } catch (error) {
-            console.error('Deleting message error:', error)
-            throw error;
+        if (!deletedMessage.length) {
+            throw new Error('Message not found')
         }
+
+        return deletedMessage[0]
     }
 }
 
