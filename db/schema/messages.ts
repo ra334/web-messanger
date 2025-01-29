@@ -14,5 +14,6 @@ export const messages = pgTable('messages', {
     text: varchar('text', {length: 255}),
     is_edited: boolean('is_edited').notNull().default(false),
     is_readed: boolean('is_readed').notNull().default(false),
+    isDeleted: boolean('is_deleted').notNull().default(false),
     createdAt: timestamp('created_at').notNull().defaultNow()
 })
