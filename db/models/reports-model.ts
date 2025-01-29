@@ -57,6 +57,10 @@ class ReportsModel {
             where: (eq(reports.reportedUserID, data.reportedUserID))
         })
 
+        if (!userReports.length) {
+            throw new Error('Reports not found')
+        }
+
         return userReports
     }
 
@@ -64,6 +68,10 @@ class ReportsModel {
         const reportsFromUser = await db.query.reports.findMany({
             where: (eq(reports.userID, data.userID))
         })
+
+        if (!reportsFromUser.length) {
+            throw new Error('Reports not found')
+        }
 
         return reportsFromUser
     }
