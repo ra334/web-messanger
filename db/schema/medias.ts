@@ -6,7 +6,7 @@ export const mediaType = pgEnum('media_type', ['image', 'video', 'audio', 'file'
 export const medias = pgTable("medias", {
     id: uuid("id").primaryKey().defaultRandom(),
     userID: uuid("user_id").notNull().references(() => users.id),
-    type: mediaType("type").notNull(),
+    type: mediaType().notNull(),
     url: varchar("url", {length: 255}).notNull(),
     fileName: varchar("file_name", {length: 255}).notNull(),
     size: bigint("size", { mode: "number" }).notNull(),
