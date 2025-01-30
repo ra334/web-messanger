@@ -22,13 +22,17 @@ class GroupsModel {
             const group = await db.insert(groups).values({
                 creatorID: data.creatorID,
                 name: data.name,
-                description: data.description,
                 avatarURL: data.avatarURL
             }).returning()
 
             return group[0]
-        } catch (error) {
-            console.error('Creating group error', error)
+        } catch (error: any) {
+            const creatorError = 'insert or update on table "groups" violates foreign key constraint "groups_creator_id_users_id_fk"'
+
+            if (error.message === creatorError) {
+                throw new Error('Creator not found')
+            }
+            
             throw error
         }
     }
@@ -36,130 +40,124 @@ class GroupsModel {
     // read
 
     async getGroup(data: GetGroup): Promise<Group> {
-        try {
-            const group = await db.query.groups.findFirst({
-                where: (eq(groups.id, data.id))
-            })
+        const group = await db.query.groups.findFirst({
+            where: (eq(groups.id, data.id))
+        })
 
-            if (!group) {
-                throw new Error('Group not found')
-            }
-
-            return group
-        } catch (error) {
-            console.error('Getting group error', error)
-            throw error
+        if (!group) {
+            throw new Error('Group not found')
         }
+
+        return group
     }
 
     async getGroupsFromCreator(data: GetGroupFromUser): Promise<Group[]> {
-        try {
-            const groupsFromUser = await db.query.groups.findMany({
-                where: (eq(groups.creatorID, data.creatorID))
-            })
+        const groupsFromUser = await db.query.groups.findMany({
+            where: (eq(groups.creatorID, data.creatorID))
+        })
 
-            return groupsFromUser
-        } catch (error) {
-            console.error('Getting groups from user error', error)
-            throw error
+        if (!groupsFromUser.length) {
+            throw new Error('Groups not found')
         }
 
+        return groupsFromUser
     }
 
     // update
 
-    async updateCreatorID(data: UpdateCreatorID) {
-        try {
-            const updated = await db
-                .update(groups)
-                .set({
-                    creatorID: data.creatorID
-                })
-                .where(eq(groups.id, data.id))
+    async updateCreatorID(data: UpdateCreatorID): Promise<Group> {
+        const updated = await db
+            .update(groups)
+            .set({
+                creatorID: data.creatorID
+            })
+            .where(eq(groups.id, data.id))
+            .returning()
 
-            return updated
-        } catch (error) {
-            console.error('Updating creator ID error', error)
-            throw error
+        if (!updated.length) {
+            throw new Error('Group not found')
         }
+
+        return updated[0]
     }
 
-    async updateGroupName(data: UpdateGroupName) {
-        try {
-            const updated = await db
-                .update(groups)
-                .set({
-                    name: data.name
-                })
-                .where(eq(groups.id, data.id))
+    async updateGroupName(data: UpdateGroupName): Promise<Group> {
+        const updated = await db
+            .update(groups)
+            .set({
+                name: data.name
+            })
+            .where(eq(groups.id, data.id))
+            .returning()
 
-            return updated
-        } catch (error) {
-            console.error('Updating group name error', error)
-            throw error
+        if (!updated.length) {
+            throw new Error('Group not found')
         }
 
+        return updated[0]
     }
 
-    async updateGroupDescription(data: UpdateGroupDescription) {
-        try {
-            const updated = await db
-                .update(groups)
-                .set({
-                    description: data.description
-                })
-                .where(eq(groups.id, data.id))
+    async updateGroupDescription(data: UpdateGroupDescription): Promise<Group> {
+        const updated = await db
+            .update(groups)
+            .set({
+                description: data.description
+            })
+            .where(eq(groups.id, data.id))
+            .returning()
 
-            return updated
-        } catch (error) {
-            console.error('Updating group description error', error)
-            throw error
+        if (!updated.length) {
+            throw new Error('Group not found')
         }
+
+        return updated[0]
     }
 
-    async updateGroupAvatarURL(data: UpdateGroupAvatarURL) {
-        try {
-            const updated = await db
-                .update(groups)
-                .set({
-                    avatarURL: data.avatarURL
-                })
-                .where(eq(groups.id, data.id))
+    async updateGroupAvatarURL(data: UpdateGroupAvatarURL): Promise<Group> {
+        const updated = await db
+            .update(groups)
+            .set({
+                avatarURL: data.avatarURL
+            })
+            .where(eq(groups.id, data.id))
+            .returning()
 
-            return updated
-        } catch (error) {
-            console.error('Updating group avatar URL error', error)
-            throw error
+        if (!updated.length) {
+            throw new Error('Group not found')
         }
+
+        return updated[0]
     }
 
-    async updateGroupMembersCount(data: UpdateGroupMemberCount) {
-        try {
-            const updated = await db
-                .update(groups)
-                .set({
-                    membersCount: data.memberCount
-                })
-                .where(eq(groups.id, data.id))
+    async updateGroupMembersCount(data: UpdateGroupMemberCount): Promise<Group> {
+        const updated = await db
+            .update(groups)
+            .set({
+                membersCount: data.memberCount
+            })
+            .where(eq(groups.id, data.id))
+            .returning()
 
-            return updated
-        } catch (error) {
-            console.error('Updating group members count error', error)
-            throw error
+        if (!updated.length) {
+            throw new Error('Group not found')
         }
+
+        return updated[0]
     }
 
     // delete
 
-    async deleteGroup(data: DeleteGroup) {
-        try {
-            const deleted = await db
-                .delete(groups)
-                .where(eq(groups.id, data.id))
-        } catch (error) {
-            console.error('Deleting group error', error)
-            throw error
+    async deleteGroup(data: DeleteGroup): Promise<Group> {
+        const deleted = await db
+            .delete(groups)
+            .where(eq(groups.id, data.id))
+            .returning()
+
+        if (!deleted.length) {
+            throw new Error('Group not found')
         }
+
+        return deleted[0]
     }
 }
 
