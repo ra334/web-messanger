@@ -5,7 +5,7 @@ export const groups = pgTable('groups', {
     id: uuid('id').primaryKey().defaultRandom(),
     creatorID: uuid('creator_id').notNull().references(() => users.id),
     name: text('name').notNull(),
-    description: text('description').notNull(),
+    description: text('description'),
     avatarURL: varchar('avatar_url', { length: 255 }).notNull(),
     membersCount: integer('members_count').default(0).notNull(),
     createdAt: timestamp('created_at').defaultNow().notNull(),
