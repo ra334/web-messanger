@@ -2,12 +2,14 @@ import {pgTable, varchar, pgEnum, boolean, timestamp, uuid } from "drizzle-orm/p
 import { dialogs } from "./dialogs";
 import { medias } from "./medias";
 import { users } from "./users";
+import { groups } from './groups'
 
 export const messageType = pgEnum('message_type', ['text', 'media'])
 
 export const messages = pgTable('messages', {
     id: uuid('id').primaryKey().defaultRandom(),
-    dialogID: uuid('dialog_id').notNull().references(() => dialogs.id),
+    dialogID: uuid('dialog_id').references(() => dialogs.id),
+    groupID: uuid('group_id').references(() => groups.id),
     senderID: uuid('sender_id').notNull().references(() => users.id),
     messageType: messageType().notNull(),
     mediaID: uuid('media_id').references(() => medias.id),
