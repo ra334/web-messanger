@@ -7,6 +7,6 @@ export const groups = pgTable('groups', {
     name: text('name').notNull(),
     description: text('description'),
     avatarURL: varchar('avatar_url', { length: 255 }).notNull(),
-    membersCount: integer('members_count').default(0).notNull(),
+    membersCount: integer('members_count').default(1).notNull(),
     createdAt: timestamp('created_at').defaultNow().notNull(),
 })
