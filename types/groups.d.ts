@@ -2,7 +2,7 @@ interface Group {
     id: string;
     creatorID: string;
     name: string;
-    description: string;
+    description: string | null;
     avatarURL: string;
     membersCount: number;
     createdAt: Date;
@@ -11,7 +11,6 @@ interface Group {
 interface CreateGroup {
     creatorID: string;
     name: string;
-    description: string;
     avatarURL: string;
 }
 
