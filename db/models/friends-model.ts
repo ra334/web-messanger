@@ -22,8 +22,16 @@ class FriendsModel {
             }).returning()
 
             return friend[0]
-        } catch (error) {
-            console.error('Creating friend failed:', error)
+        } catch (error: any) {
+            const userError = 'insert or update on table "friends" violates foreign key constraint "friends_user_id_users_id_fk"'
+            const friendError = 'insert or update on table "friends" violates foreign key constraint "friends_friend_id_users_id_fk"'
+            
+            if (error.message === userError) {
+                throw new Error('User not found')
+            } else if (error.message === friendError) {
+                throw new Error('Friend not found')
+            }
+
             throw error
         }
     }
@@ -31,68 +39,60 @@ class FriendsModel {
     // read
 
     async getFriend(data: GetFriend): Promise<Friend> {
-        try {
-            const friend = await db.query.friends.findFirst({
-                where: (eq(friends.id, data.id))
-            })
+        const friend = await db.query.friends.findFirst({
+            where: (eq(friends.id, data.id))
+        })
 
-            if (!friend) {
-                throw new Error('Friend not found')
-            }
-
-            return friend
-        } catch (error) {
-            console.error('Getting friend failed:', error)
-            throw error
+        if (!friend) {
+            throw new Error('Friend not found')
         }
+
+        return friend
     }
 
-    async getFriendsFromUser(data: GetFriends) {
-        try {
-            const friendsFromUser = await db.query.friends.findMany({
-                where: (eq(friends.userID, data.userID))
-            })
+    async getFriendsFromUser(data: GetFriends): Promise<Friend[]> {
+        const friendsFromUser = await db.query.friends.findMany({
+            where: (eq(friends.userID, data.userID))
+        })
 
-            return friendsFromUser
-        } catch (error) {
-            console.error('Getting friends failed:', error)
-            throw error
+        if (!friendsFromUser.length) {
+            throw new Error('Friends not found')
         }
+
+        return friendsFromUser
     }
 
     // update
 
-    async updateFriendName(data: UpdateFriendName) {
-        try {
-            const friend = await db
-                .update(friends)
-                .set({
-                    firstName: data.firstName
-                })
-                .where(eq(friends.id, data.id))
-                .returning()
+    async updateFriendName(data: UpdateFriendName): Promise<Friend> {
+        const friend = await db
+            .update(friends)
+            .set({
+                firstName: data.firstName
+            })
+            .where(eq(friends.id, data.id))
+            .returning()
 
-            return friend[0]
-        } catch (error) {
-            console.error('Updating friend failed:', error)
-            throw error
+        if (!friend.length) {
+            throw new Error('Friend not found')
         }
+
+        return friend[0]
     }
 
     // delete
 
-    async deleteFriend(data: DeleteFriend) {
-        try {
-            const friend = await db
-                .delete(friends)
-                .where(eq(friends.id, data.id))
-                .returning()
+    async deleteFriend(data: DeleteFriend): Promise<Friend> {
+        const friend = await db
+            .delete(friends)
+            .where(eq(friends.id, data.id))
+            .returning()
 
-            return friend[0]
-        } catch (error) {
-            console.error('Deleting friend failed:', error)
-            throw error
+        if (!friend.length) {
+            throw new Error('Friend not found')
         }
+
+        return friend[0]
     }
 }
 
