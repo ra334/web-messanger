@@ -1,20 +1,15 @@
 interface BlockedUser {
     id: string;
-    blockedID: string;
+    userID: string;
     createdAt: Date;
 }
 
 interface CreateBlockedUser {
-    blockedID: string;
+    userID: string;
 }
 
 interface GetBlockdeUser {
     id: string;
-}
-
-interface GetBlockedUsers {
-    limit: number;
-    offset: number;
 }
 
 interface DeleteBlockedUser {
@@ -25,6 +20,5 @@ export {
     BlockedUser,
     CreateBlockedUser,
     GetBlockdeUser,
-    GetBlockedUsers,
     DeleteBlockedUser
 }
