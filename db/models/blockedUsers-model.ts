@@ -5,7 +5,6 @@ import type {
     BlockedUser,
     CreateBlockedUser,
     GetBlockdeUser,
-    GetBlockedUsers,
     DeleteBlockedUser
 } from '@/types/blockedUsers'
 
@@ -15,12 +14,17 @@ class BlockedUsersModel {
     async createBlockedUser(data: CreateBlockedUser): Promise<BlockedUser> {
         try {
             const blockedUser = await db.insert(blockedUsers).values({
-                blockedID: data.blockedID
+                userID: data.userID
             }).returning()
 
             return blockedUser[0]
-        } catch (error) {
-            console.error('Creating blocked user error:', error)
+        } catch (error: any) {
+            const userError = 'insert or update on table "blocked_users" violates foreign key constraint "blocked_users_user_id_users_id_fk"'
+
+            if (error.message === userError) {
+                throw new Error('User not found')
+            }
+
             throw error
         }
     }
@@ -28,35 +32,15 @@ class BlockedUsersModel {
     // read
 
     async getBlockedUser(data: GetBlockdeUser): Promise<BlockedUser> {
-        try {
-            const blockedUser = await db.query.blockedUsers.findFirst({
-                where: (eq(blockedUsers.id, data.id))
-            })
+        const blockedUser = await db.query.blockedUsers.findFirst({
+            where: (eq(blockedUsers.id, data.id))
+        })
 
-            if (!blockedUser) {
-                throw new Error('Blocked user not found')
-            }
-
-            return blockedUser
-        } catch (error) {
-            console.error('Getting blocked user error:', error)
-            throw error
-        }
-    }
-
-    async getBlockdeUsers(data: GetBlockedUsers): Promise<BlockedUser[]> {
-        try {
-            const users = await db.query.blockedUsers.findMany({
-                limit: data.limit,
-                offset: data.offset
-            })
-
-            return users
-        } catch (error) {
-            console.error('Getting blocked users error:', error)
-            throw error
+        if (!blockedUser) {
+            throw new Error('Blocked user not found')
         }
 
+        return blockedUser
     }
 
     // update
@@ -66,17 +50,16 @@ class BlockedUsersModel {
     // delete
 
     async deleteBlockedUser(data: DeleteBlockedUser): Promise<BlockedUser> {
-        try {
-            const user = await db
-                .delete(blockedUsers)
-                .where(eq(blockedUsers.id, data.id))
-                .returning()
+        const user = await db
+            .delete(blockedUsers)
+            .where(eq(blockedUsers.id, data.id))
+            .returning()
 
-            return user[0]
-        } catch (error) {
-            console.error('Deleting blocked user error:', error)
-            throw error
+        if (!user.length) {
+            throw new Error('Blocked user not found')
         }
+
+        return user[0]
     }
 }
 
