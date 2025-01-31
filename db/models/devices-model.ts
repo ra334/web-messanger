@@ -24,8 +24,13 @@ class DevicesModel {
             }).returning()
 
             return device[0]
-        } catch (error) {
-            console.error('Creating device error:', error)
+        } catch (error: any) {
+            const userError = 'insert or update on table "devices" violates foreign key constraint "devices_userID_users_id_fk"'
+
+            if (error.message === userError) {
+                throw new Error('User not found')
+            }
+
             throw error
         }
     }
@@ -33,86 +38,76 @@ class DevicesModel {
     // read
 
     async getDevice(data: GetDevice): Promise<Device> {
-        try {
-            const device = await db.query.devices.findFirst({
-                where: (eq(devices.id, data.id))
-            })
+        const device = await db.query.devices.findFirst({
+            where: (eq(devices.id, data.id))
+        })
 
-            if (!device) {
-                throw new Error('Device not found')
-            }
-
-            return device
-        } catch (error) {
-            console.error('Getting device error:', error)
-            throw error
+        if (!device) {
+            throw new Error('Device not found')
         }
+
+        return device
     }
 
     async getDevicesFromUser(data: GetDevicesFromUser): Promise<Device[]> {
-        try {
-            const devicesFromUser = await db.query.devices.findMany({
-                where: (eq(devices.userID, data.userID))
-            })
+        const devicesFromUser = await db.query.devices.findMany({
+            where: (eq(devices.userID, data.userID))
+        })
 
-            return devicesFromUser
-        } catch (error) {
-            console.error('Getting devices from user error:', error)
-            throw error
+        if (!devicesFromUser.length) {
+            throw new Error('Devices not found')
         }
 
+        return devicesFromUser
     }
 
     // update
 
     async updateDeviceIsActive(data: UpdateDevicesIsActive): Promise<Device> {
-        try {
-            const device = await db
-                .update(devices)
-                .set({
-                    isActive: data.isActive
-                })
-                .where(eq(devices.id, data.id))
-                .returning()
-
-            return device[0]
-        } catch (error) {
-            console.error('Updating device is active error:', error)
-            throw error
+        const device = await db
+            .update(devices)
+            .set({
+                isActive: data.isActive
+            })
+            .where(eq(devices.id, data.id))
+            .returning()
+        
+        if (!device.length) {
+            throw new Error('Device not found')
         }
+
+        return device[0]
     } 
 
     async updateDeviceLastAccessedAt(data: UpdateDeviceLastAccessedAt): Promise<Device> {
-        try {
-            const device = await db
-                .update(devices)
-                .set({
-                    lastAccessedAt: data.lastAccessedAt
-                })
-                .where(eq(devices.id, data.id))
-                .returning()
+        const device = await db
+            .update(devices)
+            .set({
+                lastAccessedAt: data.lastAccessedAt
+            })
+            .where(eq(devices.id, data.id))
+            .returning()
 
-            return device[0]
-        } catch (error) {
-            console.error('Updating device last accessed at error:', error)
-            throw error
+        if (!device.length) {
+            throw new Error('Device not found')
         }
+
+        return device[0]
     }
 
     // delete
 
     async deleteDevice(data: DeleteDevice): Promise<Device> {
-        try {
-            const device = await db
-                .delete(devices)
-                .where(eq(devices.id, data.id))
-                .returning()
-            
-            return device[0]
-        } catch (error) {
-            console.error('Deleting device error:', error)
-            throw error
+        const device = await db
+            .delete(devices)
+            .where(eq(devices.id, data.id))
+            .returning()
+        
+        if (!device.length) {
+            throw new Error('Device not found')
         }
+
+        return device[0]
     }
 }
 
