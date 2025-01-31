@@ -4,7 +4,6 @@ import {
     BlockedUser,
     CreateBlockedUser,
     GetBlockdeUser,
-    GetBlockedUsers,
     DeleteBlockedUser
 } from "@/types/blockedUsers";
 
