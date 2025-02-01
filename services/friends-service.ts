@@ -34,28 +34,73 @@ const updateFriendNameSchema = z.intersection(idSchema, friendFristNameSchema)
 
 class FriendsService {
     async createFriend(data: CreateFriend): Promise<Friend> {
-        const parseData = friendSchema.parse(data)
-        return await friendsModel.createFriend(parseData);
+        try {
+            const parseData = friendSchema.parse(data)
+            return await friendsModel.createFriend(parseData)
+        } catch (error: any) {
+
+            if (error instanceof z.ZodError) {
+                throw new Error(error.errors[0].message)
+            }
+
+            throw error
+        }
     }
 
     async getFriend(data: GetFriend): Promise<Friend> {
-        const parseData = idSchema.parse(data)
-        return await friendsModel.getFriend(parseData)
+        try {
+            const parseData = idSchema.parse(data)
+            return await friendsModel.getFriend(parseData)
+        } catch (error: any) {
+            
+            if (error instanceof z.ZodError) {
+                throw new Error(error.errors[0].message)
+            }
+
+            throw error
+        }
     }
 
     async getFriendsFromUser(data: GetFriends): Promise<Friend[]> {
-        const parseData = userIDSchema.parse(data)
-        return await friendsModel.getFriendsFromUser(parseData)
+        try {
+            const parseData = userIDSchema.parse(data)
+            return await friendsModel.getFriendsFromUser(parseData)
+        } catch (error: any) {
+            
+            if (error instanceof z.ZodError) {
+                throw new Error(error.errors[0].message)
+            }
+
+            throw error
+        }
     }
 
     async updateFriendName(data: UpdateFriendName): Promise<Friend> {
-        const parseData = updateFriendNameSchema.parse(data)
-        return await friendsModel.updateFriendName(parseData)
+        try {
+            const parseData = updateFriendNameSchema.parse(data)
+            return await friendsModel.updateFriendName(parseData)
+        } catch (error: any) {
+            
+            if (error instanceof z.ZodError) {
+                throw new Error(error.errors[0].message)
+            }
+
+            throw error
+        }
     }
 
     async deleteFriend(data: DeleteFriend): Promise<Friend> {
-        const parseData = idSchema.parse(data)
-        return await friendsModel.deleteFriend(parseData)
+        try {
+            const parseData = idSchema.parse(data)
+            return await friendsModel.deleteFriend(parseData)
+        } catch (error: any) {
+            
+            if (error instanceof z.ZodError) {
+                throw new Error(error.errors[0].message)
+            }
+
+            throw error
+        }
     }
 }
 
