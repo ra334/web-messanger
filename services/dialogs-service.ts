@@ -1,3 +1,4 @@
+import { z } from 'zod'
 import dialogsModel from "@/db/models/dialogs-model";
 import type {
     Dialog,
@@ -10,55 +11,136 @@ import type {
     DeleteDialog
 } from '@/types/dialogs'
 
+const idSchema = z.object({
+    id: z.string().uuid()
+})
+
+const createDialogSchema = z.object({
+    senderID: z.string().uuid(),
+    receiverID: z.string().uuid(),
+    lastMessage: z.string().min(1, 'Last message is required')
+}).refine(data => data.senderID !== data.receiverID, {
+    message: 'You cannot create dialog with yourself',
+    path: ['receiverID', 'senderID']
+})
+
+const getDialogsByUserSchema = z.object({
+    userID: z.string().uuid()
+})
+
+const updateIsDeletedForSenderSchema = z.object({
+    ...idSchema.shape,
+    value: z.boolean()
+})
+
+const updateIsDeletedForReceiverSchema = z.object({
+    ...idSchema.shape,
+    value: z.boolean()
+})
+
+const updateLastMessageSchema = z.object({
+    ...idSchema.shape,
+    lastMessage: z.string().min(1, 'Last message is required')
+})
+
 class DialogsService {
     async createDialog(data: CreateDialog): Promise<Dialog> {
-        if (data.senderID === data.receiverID) {
-            throw new Error('You cannot create dialog with yourself')
+        try {
+            const parseData = createDialogSchema.parse(data)
+            return await dialogsModel.createDialog(parseData)
+
+        } catch (error: any) {
+
+            if (error instanceof z.ZodError) {
+                throw new Error(error.errors[0].message)
+            }
+
+            throw error
         }
-
-        if (!data.lastMessage) {
-            throw new Error('Last message is required')
-        }
-
-        const dialog = await dialogsModel.createDialog(data)
-
-        return dialog
     }
 
     async getDialog(data: GetDialog): Promise<Dialog> {
-        const dialog = await dialogsModel.getDialog(data)
+        try {
+            const parseData = idSchema.parse(data)
+            return await dialogsModel.getDialog(parseData)
 
-        return dialog
+        } catch (error: any) {
+            if (error instanceof z.ZodError) {
+                throw new Error(error.errors[0].message)
+            }
+
+            throw error
+        }
     }
 
     async getDialogsByUser(data: GetDialogs): Promise<Dialog[]> {
-        const dialogs = await dialogsModel.getDialogsByUser(data)
+        try {
+            const parseData = getDialogsByUserSchema.parse(data)
+            return await dialogsModel.getDialogsByUser(parseData)
 
-        return dialogs
+        } catch (error: any) {
+            if (error instanceof z.ZodError) {
+                throw new Error(error.errors[0].message)
+            }
+
+            throw error
+        }
     }
 
     async updateIsDeletedForSender(data: UpdateIsDeletedForSender): Promise<Dialog> {
-        const dialog = await dialogsModel.updateIsDeletedForSender(data)
+        try {
+            const parseData = updateIsDeletedForSenderSchema.parse(data)
+            return await dialogsModel.updateIsDeletedForSender(parseData)
 
-        return dialog
+        } catch (error: any) {
+            if (error instanceof z.ZodError) {
+                throw new Error(error.errors[0].message)
+            }
+
+            throw error
+        }
     }
 
     async updateIsDeletedForReceiver(data: UpdateIsDeletedForReceiver): Promise<Dialog> {
-        const dialog = await dialogsModel.updateIsDeletedForReceiver(data)
+        try {
+            const parseData = updateIsDeletedForReceiverSchema.parse(data)
+            return await dialogsModel.updateIsDeletedForReceiver(parseData)
 
-        return dialog
+        } catch (error: any) {
+            if (error instanceof z.ZodError) {
+                throw new Error(error.errors[0].message)
+            }
+
+            throw error
+        }
     }
 
     async updateLastMessage(data: UpdateLastMessage): Promise<Dialog> {
-        const dialog = await dialogsModel.updateLastMessage(data)
+        try {
+            const parseData = updateLastMessageSchema.parse(data)
+            return await dialogsModel.updateLastMessage(parseData)
 
-        return dialog
+        } catch (error: any) {
+            if (error instanceof z.ZodError) {
+                throw new Error(error.errors[0].message)
+            }
+
+            throw error
+        }
     }
 
     async deleteDialog(data: DeleteDialog): Promise<Dialog> {
-        const dialog = await dialogsModel.deleteDialog(data)
+        try {
+            const parseData = idSchema.parse(data)
+            return await dialogsModel.deleteDialog(parseData)
 
-        return dialog
+        } catch (error: any) {
+            if (error instanceof z.ZodError) {
+                throw new Error(error.errors[0].message)
+            }
+
+            throw error
+        }
     }
 }
 
