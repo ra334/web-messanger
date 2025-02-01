@@ -37,33 +37,87 @@ const updateDeviceLastAccessedAtSchema = z.object({
 
 class DevicesService {
     async createDevice(data: CreateDevice): Promise<Device> {
-        const parseData = deviceIDSchema.parse(data)
-        return await devicesModel.createDevice(parseData)
+        try {
+            const parseData = deviceIDSchema.parse(data)
+            return await devicesModel.createDevice(parseData)
+
+        } catch (error: any) {
+            if (error instanceof z.ZodError) {
+                throw new Error(error.errors[0].message)
+            }
+
+            throw error
+        }
     }
 
     async getDevice(data: GetDevice): Promise<Device> {
-        const parseData = idSchema.parse(data)
-        return await devicesModel.getDevice(parseData)
+        try {
+            const parseData = idSchema.parse(data)
+            return await devicesModel.getDevice(parseData)
+
+        } catch (error: any) {
+            if (error instanceof z.ZodError) {
+                throw new Error(error.errors[0].message)
+            }
+
+            throw error
+        }
     }
 
     async getDevicesFromUser(data: GetDevicesFromUser): Promise<Device[]> {
-        const parseData = userIDSchema.parse(data)
-        return await devicesModel.getDevicesFromUser(parseData)
+        try {
+            const parseData = userIDSchema.parse(data)
+            return await devicesModel.getDevicesFromUser(parseData)
+
+        } catch (error: any) {
+            if (error instanceof z.ZodError) {
+                throw new Error(error.errors[0].message)
+            }
+
+            throw error
+        }
     }
 
     async updateDevicesIsActive(data: UpdateDevicesIsActive): Promise<Device> {
-        const parseData = updateDeviceIsActiveSchema.parse(data)
-        return await devicesModel.updateDeviceIsActive(parseData)
+        try {
+            const parseData = updateDeviceIsActiveSchema.parse(data)
+            return await devicesModel.updateDeviceIsActive(parseData)
+
+        } catch (error: any) {
+            if (error instanceof z.ZodError) {
+                throw new Error(error.errors[0].message)
+            }
+
+            throw error
+        }
     }
 
     async updateDeviceLastAccessedAt(data: UpdateDeviceLastAccessedAt): Promise<Device> {
-        const parseData = updateDeviceLastAccessedAtSchema.parse(data)
-        return await devicesModel.updateDeviceLastAccessedAt(parseData)
+        try {
+            const parseData = updateDeviceLastAccessedAtSchema.parse(data)
+            return await devicesModel.updateDeviceLastAccessedAt(parseData)
+
+        } catch (error: any) {
+            if (error instanceof z.ZodError) {
+                throw new Error(error.errors[0].message)
+            }
+
+            throw error
+        }
     }
 
     async deleteDevice(data: DeleteDevice): Promise<Device> {
-        const parseData = idSchema.parse(data)
-        return await devicesModel.deleteDevice(parseData)
+        try {
+            const parseData = idSchema.parse(data)
+            return await devicesModel.deleteDevice(parseData)
+
+        } catch (error: any) {
+            if (error instanceof z.ZodError) {
+                throw new Error(error.errors[0].message)
+            }
+
+            throw error
+        }
     }
 }
 
