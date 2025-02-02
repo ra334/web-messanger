@@ -19,10 +19,15 @@ interface CreateUser {
     avatarURL: string;
 }
 
-interface LoginUser {
-    nickName: string
-    email: string
+interface LoginUserWithCredentials {
+    nickName: string | null
+    email: string | null
     password: string
+}
+
+interface LoginUserWithOauth {
+    nickName: string | null
+    email: string | null
 }
 
 interface GetUser {
