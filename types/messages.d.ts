@@ -1,12 +1,14 @@
 interface Message {
     id: string;
-    dialogID: string;
+    dialogID: string | null;
+    groupID: string | null;
     senderID: string;
     messageType: 'text' | 'media';
     mediaID: string | null;
     text: string | null;
     is_edited: boolean;
     is_readed: boolean;
+    isDeleted: boolean;
     createdAt: Date;
 }
 
