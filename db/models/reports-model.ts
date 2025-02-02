@@ -81,7 +81,7 @@ class ReportsModel {
     async updateReportType(data: UpdateReportType): Promise<Report> {
         const reportType = await db
             .update(reports)
-            .set({reportType: data.reportedType})
+            .set({reportType: data.reportType})
             .where(eq(reports.id, data.id))
             .returning()
 

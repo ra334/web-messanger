@@ -53,7 +53,7 @@ interface GetReportsFromUser {
 
 interface UpdateReportType {
     id: string;
-    reportedType: reportTypes;
+    reportType: reportTypes;
 }
 
 interface UpdateReportNotes {
