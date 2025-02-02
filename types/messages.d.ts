@@ -13,11 +13,12 @@ interface Message {
 }
 
 interface CreateMessage {
-    dialogID: string;
+    dialogID: string | null;
+    groupID: string | null;
     senderID: string;
     messageType: 'text' | 'media';
     mediaID: string | null;
-    text: string;
+    text: string | null;
 }
 
 interface GetMessage {

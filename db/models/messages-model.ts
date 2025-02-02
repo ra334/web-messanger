@@ -20,6 +20,7 @@ class MessagesModel {
         try {
             const newMessage = await db.insert(messages).values({
                 dialogID: data.dialogID,
+                groupID: data.groupID,
                 senderID: data.senderID,
                 messageType: data.messageType,
                 mediaID: data.mediaID,
