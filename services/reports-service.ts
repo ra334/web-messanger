@@ -1,3 +1,4 @@
+import { z } from 'zod'
 import reportsModel from '@/db/models/reports-model'
 import type {
     Report,
@@ -11,57 +12,152 @@ import type {
     DeleteReport
 } from '@/types/reports'
 
+const idSchema = z.object({
+    id: z.string().uuid()
+})
+
+const createReportSchema = z.object({
+    userID: z.string().uuid(),
+    reportedUserID: z.string().uuid(),
+    reportType: z.string(),
+    status: z.string(),
+    notes: z.string()
+})
+
+const reportedUserIDSchema = z.object({
+    reportedUserID: z.string().uuid()
+})
+
+const userIDSchema = z.object({
+    userID: z.string().uuid()
+})
+
+const updateReportTypeSchema = z.object({
+    ...idSchema.shape,
+    reportType: z.string()
+})
+
+const updateReportNotesSchema = z.object({
+    ...idSchema.shape,
+    notes: z.string()
+})
+
+const updateReportStatusSchema = z.object({
+    ...idSchema.shape,
+    status: z.string()
+})
+
 class ReportsService {
     async createReport(data: CreateReport): Promise<Report> {
-        if (data.userID === data.reportedUserID) {
-            throw new Error('You cannot report yourself')
+        try {
+            const parseData = createReportSchema.parse(data)
+            return await reportsModel.createReport(parseData)
+        } catch (error: any) {
+            
+            if (error instanceof z.ZodError) {
+                throw new Error(error.errors[0].message)
+            }
+
+            throw error
         }
-
-        const report = await reportsModel.createReport(data)
-
-        return report
     }
 
     async getReport(data: GetReport): Promise<Report> {
-        const report = await reportsModel.getReport(data)
+        try {
+            const parseData = idSchema.parse(data)
+            return await reportsModel.getReport(parseData)
+        } catch (error: any) {
+            
+            if (error instanceof z.ZodError) {
+                throw new Error(error.errors[0].message)
+            }
 
-        return report
+            throw error
+        }
     }
 
     async getReportsOnUser(data: GetReportsOnUser): Promise<Report[]> {
-        const reports = await reportsModel.getReportsOnUser(data)
+        try {
+            const parseData = reportedUserIDSchema.parse(data)
+            return await reportsModel.getReportsOnUser(parseData)
+        } catch (error: any) {
+            
+            if (error instanceof z.ZodError) {
+                throw new Error(error.errors[0].message)
+            }
 
-        return reports
+            throw error
+        }
     }
 
     async getReportsFromUsesr(data: GetReportsFromUser): Promise<Report[]> {
-        const reports = await reportsModel.getReportsFromUser(data)
+        try {
+            const parseData = userIDSchema.parse(data)
+            return await reportsModel.getReportsFromUser(parseData)
+        } catch (error: any) {
+            
+            if (error instanceof z.ZodError) {
+                throw new Error(error.errors[0].message)
+            }
 
-        return reports
+            throw error
+        }
     }
 
     async updateReportType(data: UpdateReportType): Promise<Report> {
-        const report = await reportsModel.updateReportType(data)
+        try {
+            const parseData = updateReportTypeSchema.parse(data)
+            return await reportsModel.updateReportType(parseData)
+        } catch (error: any) {
+            
+            if (error instanceof z.ZodError) {
+                throw new Error(error.errors[0].message)
+            }
 
-        return report
+            throw error
+        }
     }
 
     async updateReportNotes(data: UpdateReportNotes): Promise<Report> {
-        const report = await reportsModel.updateReportNotes(data)
+        try {
+            const parseData = updateReportNotesSchema.parse(data)
+            return await reportsModel.updateReportNotes(parseData)
+        } catch (error: any) {
+            
+            if (error instanceof z.ZodError) {
+                throw new Error(error.errors[0].message)
+            }
 
-        return report
+            throw error
+        }
     }
 
     async updateReportStatus(data: UpdateReportStatus): Promise<Report> {
-        const report = await reportsModel.updateReportStatus(data)
+        try {
+            const parseData = updateReportStatusSchema.parse(data)
+            return await reportsModel.updateReportStatus(data)
+        } catch (error: any) {
+            
+            if (error instanceof z.ZodError) {
+                throw new Error(error.errors[0].message)
+            }
 
-        return report
+            throw error
+        }
     }
 
     async deleteReport(data: DeleteReport): Promise<Report> {
-        const report = await reportsModel.deleteReport(data)
+        try {
+            const parseData = idSchema.parse(data)
+            return await reportsModel.deleteReport(data)
+        } catch (error: any) {
+            
+            if (error instanceof z.ZodError) {
+                throw new Error(error.errors[0].message)
+            }
 
-        return report
+            throw error
+        }
     }
 }
 
