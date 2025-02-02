@@ -46,48 +46,120 @@ const createGroupSchema = creatorIdSchema.extend({
 
 class GroupsService {
     async createGroup(data: CreateGroup): Promise<Group> {
-        const parseData = createGroupSchema.parse(data)
-        return await groupsModel.createGroup(parseData)
+        try {
+            const parseData = createGroupSchema.parse(data)
+            return await groupsModel.createGroup(parseData)
+        } catch (error: any) {
+            if (error instanceof z.ZodError) {
+                throw new Error(error.errors[0].message)
+            }
+
+            throw error
+        }
     }
 
     async getGroup(data: GetGroup): Promise<Group> {
-        const parseData = idSchema.parse(data)
-        return await groupsModel.getGroup(parseData)
+        try {
+            const parseData = idSchema.parse(data)
+            return await groupsModel.getGroup(parseData)
+        } catch (error: any) {
+            if (error instanceof z.ZodError) {
+                throw new Error(error.errors[0].message)
+            }
+
+            throw error
+        }
     }
 
     async getGroupsFromCreator(data: GetGroupFromUser): Promise<Group[]> {
-        const parseData = creatorIdSchema.parse(data)
-        return await groupsModel.getGroupsFromCreator(parseData)
+        try {
+            const parseData = creatorIdSchema.parse(data)
+            return await groupsModel.getGroupsFromCreator(parseData)
+        } catch (error: any) {
+            if (error instanceof z.ZodError) {
+                throw new Error(error.errors[0].message)
+            }
+
+            throw error
+        }
     }
 
     async updateCreatorID(data: UpdateCreatorID): Promise<Group> {
-        const parseData = updateCreatorIDSchema.parse(data)
-        return await groupsModel.updateCreatorID(parseData)
-    }
+        try {
+            const parseData = updateCreatorIDSchema.parse(data)
+            return await groupsModel.updateCreatorID(parseData)
+        } catch (error: any) {
+            if (error instanceof z.ZodError) {
+                throw new Error(error.errors[0].message)
+            }
+
+            throw error
+        }
+    } 
 
     async updateGroupName(data: UpdateGroupName): Promise<Group> {
-        const parseData = groupNameSchema.parse(data)
-        return await groupsModel.updateGroupName(parseData)
+        try {
+            const parseData = groupNameSchema.parse(data)
+            return await groupsModel.updateGroupName(parseData)
+        } catch (error: any) {
+            if (error instanceof z.ZodError) {
+                throw new Error(error.errors[0].message)
+            }
+
+            throw error
+        }
     }
 
     async updateGroupDescription(data: UpdateGroupDescription): Promise<Group> {
-        const parseData = groupDescriptionSchema.parse(data)
-        return await groupsModel.updateGroupDescription(parseData)
+        try {
+            const parseData = groupDescriptionSchema.parse(data)
+            return await groupsModel.updateGroupDescription(parseData)
+        } catch (error: any) {
+            if (error instanceof z.ZodError) {
+                throw new Error(error.errors[0].message)
+            }
+
+            throw error
+        }
     }
 
     async updateGroupAvatarURL(data: UpdateGroupAvatarURL): Promise<Group> {
-        const parseData = groupAvatarURLSchema.parse(data)
-        return await groupsModel.updateGroupAvatarURL(parseData)
+        try {
+            const parseData = groupAvatarURLSchema.parse(data)
+            return await groupsModel.updateGroupAvatarURL(parseData)
+        } catch (error: any) {
+            if (error instanceof z.ZodError) {
+                throw new Error(error.errors[0].message)
+            }
+
+            throw error
+        }
     }
 
     async updateGroupMemberCount(data: UpdateGroupMemberCount): Promise<Group> {
-        const parseData = groupMembersSchema.parse(data)
-        return await groupsModel.updateGroupMembersCount(parseData)
+        try {
+            const parseData = groupMembersSchema.parse(data)
+            return await groupsModel.updateGroupMembersCount(parseData)
+        } catch (error: any) {
+            if (error instanceof z.ZodError) {
+                throw new Error(error.errors[0].message)
+            }
+
+            throw error
+        }
     }
 
     async deleteGroup(data: DeleteGroup): Promise<Group> {
-        const parseData = idSchema.parse(data)
-        return await groupsModel.deleteGroup(parseData)
+        try {
+            const parseData = idSchema.parse(data)
+            return await groupsModel.deleteGroup(parseData)
+        } catch (error: any) {
+            if (error instanceof z.ZodError) {
+                throw new Error(error.errors[0].message)
+            }
+
+            throw error
+        }
     }
 }
 
