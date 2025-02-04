@@ -30,17 +30,20 @@ const updateGroupIsAdminSchema = z.object({
 
 
 class GroupMembersService {
+    private handleValidationError(error: unknown): never {
+        if (error instanceof z.ZodError) {
+            throw new Error(error.errors[0].message)
+        }
+
+        throw error
+    }
+
     async createGroupMember(data: CreateGroupMember): Promise<GroupMembers> {
         try {
             const parseData = createGroupMemberSchema.parse(data)
             return await groupMembersModel.createGroupMember(parseData)
         } catch (error: any) {
-
-            if (error instanceof z.ZodError) {
-                throw new Error(error.errors[0].message)
-            }
-
-            throw error
+            this.handleValidationError(error)
         } 
     }
 
@@ -49,12 +52,7 @@ class GroupMembersService {
             const parseData = idSchema.parse(data)
             return await groupMembersModel.getGroupMember(parseData)
         } catch (error: any) {
-
-            if (error instanceof z.ZodError) {
-                throw new Error(error.errors[0].message)
-            }
-
-            throw error
+            this.handleValidationError(error)
         }
     }
 
@@ -63,12 +61,7 @@ class GroupMembersService {
             const parseData = getGroupMembersSchema.parse(data)
             return await groupMembersModel.getGroupMembers(parseData)
         } catch (error: any) {
-            
-            if (error instanceof z.ZodError) {
-                throw new Error(error.errors[0].message)
-            }
-
-            throw error
+            this.handleValidationError(error)
         }
     }
 
@@ -77,12 +70,7 @@ class GroupMembersService {
             const parseData = updateGroupIsAdminSchema.parse(data)
             return await groupMembersModel.updateGroupIsAdmin(parseData)
         } catch (error: any) {
-
-            if (error instanceof z.ZodError) {
-                throw new Error(error.errors[0].message)
-            }
-
-            throw error
+            this.handleValidationError(error)
         }
     }
 
@@ -91,12 +79,7 @@ class GroupMembersService {
             const parseData = idSchema.parse(data)
             return await groupMembersModel.deleteGroupMember(parseData)
         } catch (error: any) {
-
-            if (error instanceof z.ZodError) {
-                throw new Error(error.errors[0].message)
-            }
-
-            throw error
+            this.handleValidationError(error)
         }
     }
 }

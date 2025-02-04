@@ -52,18 +52,20 @@ const updateMessageIsReadedSchema = z.object({
 
 
 class MessagesService {
-    
+    private handleValidationError(error: unknown): never {
+        if (error instanceof z.ZodError) {
+            throw new Error(error.errors[0].message)
+        }
+
+        throw error
+    }
+
     async sendMessage(data: CreateMessage): Promise<Message> {
         try {
             const parseData = createMessageSchema.parse(data)
             return await messagesModel.createMessage(parseData)
         } catch (error: any) {
-
-            if (error instanceof z.ZodError) {
-                throw new Error(error.errors[0].message)
-            }
-
-            throw error
+            this.handleValidationError(error)
         }
     }
 
@@ -72,12 +74,7 @@ class MessagesService {
             const parseData = idSchema.parse(data)
             return await messagesModel.getMessage(parseData)
         } catch (error: any) {
-
-            if (error instanceof z.ZodError) {
-                throw new Error(error.errors[0].message)
-            }
-
-            throw error
+            this.handleValidationError(error)
         }
     }
 
@@ -86,12 +83,7 @@ class MessagesService {
             const parseData = dialogIDSchema.parse(data)
             return await messagesModel.getMessagesFromDialog(parseData)
         } catch (error: any) {
-            
-            if (error instanceof z.ZodError) {
-                throw new Error(error.errors[0].message)
-            }
-
-            throw error
+            this.handleValidationError(error)
         }
     }
 
@@ -100,12 +92,7 @@ class MessagesService {
             const parseData = getMessageFromUser.parse(data)
             return await messagesModel.getMessagesFromUser(parseData)
         } catch (error: any) {
-            
-            if (error instanceof z.ZodError) {
-                throw new Error(error.errors[0].message)
-            }
-
-            throw error
+            this.handleValidationError(error)
         }
     }
 
@@ -114,12 +101,7 @@ class MessagesService {
             const parseData = updateMessageTextSchema.parse(data)
             return await messagesModel.updateMessageText(parseData)
         } catch (error: any) {
-            
-            if (error instanceof z.ZodError) {
-                throw new Error(error.errors[0].message)
-            }
-
-            throw error
+            this.handleValidationError(error)
         }
     }
 
@@ -128,12 +110,7 @@ class MessagesService {
             const parseData = updateMessageIsEditedSchema.parse(data)
             return await messagesModel.updateMessageIsEdited(parseData)
         } catch (error: any) {
-            
-            if (error instanceof z.ZodError) {
-                throw new Error(error.errors[0].message)
-            }
-
-            throw error
+            this.handleValidationError(error)
         }
     }
 
@@ -142,12 +119,7 @@ class MessagesService {
             const parseData = updateMessageIsReadedSchema.parse(data)
             return await messagesModel.updateMessageIsReaded(parseData)
         } catch (error: any) {
-            
-            if (error instanceof z.ZodError) {
-                throw new Error(error.errors[0].message)
-            }
-
-            throw error
+            this.handleValidationError(error)
         }
     }
 
@@ -156,12 +128,7 @@ class MessagesService {
             const parseData = idSchema.parse(data)
             return await messagesModel.deleteMessage(parseData)
         } catch (error: any) {
-            
-            if (error instanceof z.ZodError) {
-                throw new Error(error.errors[0].message)
-            }
-
-            throw error
+            this.handleValidationError(error)
         }
     }
 }

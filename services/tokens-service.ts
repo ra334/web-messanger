@@ -23,17 +23,20 @@ const createTokenSchema = z.object({
 })
 
 class TokensService {
+    private handleValidationError(error: unknown): never {
+        if (error instanceof z.ZodError) {
+            throw new Error(error.errors[0].message)
+        }
+
+        throw error
+    }
+
     async createToken(data: CreateToken): Promise<Token> {
         try {
             const parseData = createTokenSchema.parse(data)
             return await tokensModel.createToken(parseData)
         } catch (error) {
-
-            if (error instanceof z.ZodError) {
-                throw new Error(error.errors[0].message)
-            }
-
-            throw error
+            this.handleValidationError(error)
         }
     }
 
@@ -42,12 +45,7 @@ class TokensService {
             const parseData = idSchema.parse(data)
             return await tokensModel.getToken(parseData)
         } catch (error) {
-
-            if (error instanceof z.ZodError) {
-                throw new Error(error.errors[0].message)
-            }
-
-            throw error
+            this.handleValidationError(error)
         }
     }
 
@@ -56,12 +54,7 @@ class TokensService {
             const parseData = userIDSchema.parse(data)
             return await tokensModel.getUserTokens(parseData)
         } catch (error) {
-
-            if (error instanceof z.ZodError) {
-                throw new Error(error.errors[0].message)
-            }
-
-            throw error
+            this.handleValidationError(error)
         }
     }
 
@@ -70,12 +63,7 @@ class TokensService {
             const parseData = idSchema.parse(data)
             return await tokensModel.deleteToken(parseData)
         } catch (error) {
-
-            if (error instanceof z.ZodError) {
-                throw new Error(error.errors[0].message)
-            }
-
-            throw error
+            this.handleValidationError(error)
         }
     }
 }

@@ -16,18 +16,21 @@ const blockedUserSchema = z.object({
 })
 
 class BlockedUserService {
+    private handleValidationError(error: unknown): never {
+        if (error instanceof z.ZodError) {
+            throw new Error(error.errors[0].message)
+        }
+
+        throw error
+    }
+
     async blockUser(data: CreateBlockedUser): Promise<BlockedUser> {
         try {
             const parseData = blockedUserSchema.parse(data)
             return await blockedUsersModel.createBlockedUser(parseData)
 
         } catch (error: any) {
-
-            if (error instanceof z.ZodError) {
-                throw new Error(error.errors[0].message)
-            }
-
-            throw error
+            this.handleValidationError(error)
         }
     }
 
@@ -37,11 +40,7 @@ class BlockedUserService {
             return await blockedUsersModel.getBlockedUser(parseData)
 
         } catch (error: any) {
-            if (error instanceof z.ZodError) {
-                throw new Error(error.errors[0].message)
-            }
-
-            throw error
+            this.handleValidationError(error)
         }
     }
  
@@ -50,11 +49,7 @@ class BlockedUserService {
             const parseData = idSchema.parse(data)
             return await blockedUsersModel.deleteBlockedUser(parseData)
         } catch (error: any) {
-            if (error instanceof z.ZodError) {
-                throw new Error(error.errors[0].message)
-            }
-
-            throw error
+            this.handleValidationError(error)
         }
     }
 }

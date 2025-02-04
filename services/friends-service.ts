@@ -33,17 +33,20 @@ const friendSchema = z.object({
 const updateFriendNameSchema = z.intersection(idSchema, friendFristNameSchema)
 
 class FriendsService {
+    private handleValidationError(error: unknown): never {
+        if (error instanceof z.ZodError) {
+            throw new Error(error.errors[0].message)
+        }
+
+        throw error
+    }
+
     async createFriend(data: CreateFriend): Promise<Friend> {
         try {
             const parseData = friendSchema.parse(data)
             return await friendsModel.createFriend(parseData)
         } catch (error: any) {
-
-            if (error instanceof z.ZodError) {
-                throw new Error(error.errors[0].message)
-            }
-
-            throw error
+            this.handleValidationError(error)
         }
     }
 
@@ -52,12 +55,7 @@ class FriendsService {
             const parseData = idSchema.parse(data)
             return await friendsModel.getFriend(parseData)
         } catch (error: any) {
-            
-            if (error instanceof z.ZodError) {
-                throw new Error(error.errors[0].message)
-            }
-
-            throw error
+            this.handleValidationError(error)
         }
     }
 
@@ -66,12 +64,7 @@ class FriendsService {
             const parseData = userIDSchema.parse(data)
             return await friendsModel.getFriendsFromUser(parseData)
         } catch (error: any) {
-            
-            if (error instanceof z.ZodError) {
-                throw new Error(error.errors[0].message)
-            }
-
-            throw error
+            this.handleValidationError(error)
         }
     }
 
@@ -80,12 +73,7 @@ class FriendsService {
             const parseData = updateFriendNameSchema.parse(data)
             return await friendsModel.updateFriendName(parseData)
         } catch (error: any) {
-            
-            if (error instanceof z.ZodError) {
-                throw new Error(error.errors[0].message)
-            }
-
-            throw error
+            this.handleValidationError(error)
         }
     }
 
@@ -94,12 +82,7 @@ class FriendsService {
             const parseData = idSchema.parse(data)
             return await friendsModel.deleteFriend(parseData)
         } catch (error: any) {
-            
-            if (error instanceof z.ZodError) {
-                throw new Error(error.errors[0].message)
-            }
-
-            throw error
+            this.handleValidationError(error)
         }
     }
 }

@@ -45,16 +45,20 @@ const createGroupSchema = creatorIdSchema.extend({
 })
 
 class GroupsService {
+    private handleValidationError(error: unknown): never {
+        if (error instanceof z.ZodError) {
+            throw new Error(error.errors[0].message)
+        }
+
+        throw error
+    }
+
     async createGroup(data: CreateGroup): Promise<Group> {
         try {
             const parseData = createGroupSchema.parse(data)
             return await groupsModel.createGroup(parseData)
         } catch (error: any) {
-            if (error instanceof z.ZodError) {
-                throw new Error(error.errors[0].message)
-            }
-
-            throw error
+            this.handleValidationError(error)
         }
     }
 
@@ -63,11 +67,7 @@ class GroupsService {
             const parseData = idSchema.parse(data)
             return await groupsModel.getGroup(parseData)
         } catch (error: any) {
-            if (error instanceof z.ZodError) {
-                throw new Error(error.errors[0].message)
-            }
-
-            throw error
+            this.handleValidationError(error)
         }
     }
 
@@ -76,11 +76,7 @@ class GroupsService {
             const parseData = creatorIdSchema.parse(data)
             return await groupsModel.getGroupsFromCreator(parseData)
         } catch (error: any) {
-            if (error instanceof z.ZodError) {
-                throw new Error(error.errors[0].message)
-            }
-
-            throw error
+            this.handleValidationError(error)
         }
     }
 
@@ -89,11 +85,7 @@ class GroupsService {
             const parseData = updateCreatorIDSchema.parse(data)
             return await groupsModel.updateCreatorID(parseData)
         } catch (error: any) {
-            if (error instanceof z.ZodError) {
-                throw new Error(error.errors[0].message)
-            }
-
-            throw error
+            this.handleValidationError(error)
         }
     } 
 
@@ -102,11 +94,7 @@ class GroupsService {
             const parseData = groupNameSchema.parse(data)
             return await groupsModel.updateGroupName(parseData)
         } catch (error: any) {
-            if (error instanceof z.ZodError) {
-                throw new Error(error.errors[0].message)
-            }
-
-            throw error
+            this.handleValidationError(error)
         }
     }
 
@@ -115,11 +103,7 @@ class GroupsService {
             const parseData = groupDescriptionSchema.parse(data)
             return await groupsModel.updateGroupDescription(parseData)
         } catch (error: any) {
-            if (error instanceof z.ZodError) {
-                throw new Error(error.errors[0].message)
-            }
-
-            throw error
+            this.handleValidationError(error)
         }
     }
 
@@ -128,11 +112,7 @@ class GroupsService {
             const parseData = groupAvatarURLSchema.parse(data)
             return await groupsModel.updateGroupAvatarURL(parseData)
         } catch (error: any) {
-            if (error instanceof z.ZodError) {
-                throw new Error(error.errors[0].message)
-            }
-
-            throw error
+            this.handleValidationError(error)
         }
     }
 
@@ -141,11 +121,7 @@ class GroupsService {
             const parseData = groupMembersSchema.parse(data)
             return await groupsModel.updateGroupMembersCount(parseData)
         } catch (error: any) {
-            if (error instanceof z.ZodError) {
-                throw new Error(error.errors[0].message)
-            }
-
-            throw error
+            this.handleValidationError(error)
         }
     }
 
@@ -154,11 +130,7 @@ class GroupsService {
             const parseData = idSchema.parse(data)
             return await groupsModel.deleteGroup(parseData)
         } catch (error: any) {
-            if (error instanceof z.ZodError) {
-                throw new Error(error.errors[0].message)
-            }
-
-            throw error
+            this.handleValidationError(error)
         }
     }
 }

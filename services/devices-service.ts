@@ -36,17 +36,21 @@ const updateDeviceLastAccessedAtSchema = z.object({
 })
 
 class DevicesService {
+    private handleValidationError(error: unknown): never {
+        if (error instanceof z.ZodError) {
+            throw new Error(error.errors[0].message)
+        }
+
+        throw error
+    }
+
     async createDevice(data: CreateDevice): Promise<Device> {
         try {
             const parseData = deviceIDSchema.parse(data)
             return await devicesModel.createDevice(parseData)
 
         } catch (error: any) {
-            if (error instanceof z.ZodError) {
-                throw new Error(error.errors[0].message)
-            }
-
-            throw error
+            this.handleValidationError(error)
         }
     }
 
@@ -56,11 +60,7 @@ class DevicesService {
             return await devicesModel.getDevice(parseData)
 
         } catch (error: any) {
-            if (error instanceof z.ZodError) {
-                throw new Error(error.errors[0].message)
-            }
-
-            throw error
+            this.handleValidationError(error)
         }
     }
 
@@ -70,11 +70,7 @@ class DevicesService {
             return await devicesModel.getDevicesFromUser(parseData)
 
         } catch (error: any) {
-            if (error instanceof z.ZodError) {
-                throw new Error(error.errors[0].message)
-            }
-
-            throw error
+            this.handleValidationError(error)
         }
     }
 
@@ -84,11 +80,7 @@ class DevicesService {
             return await devicesModel.updateDeviceIsActive(parseData)
 
         } catch (error: any) {
-            if (error instanceof z.ZodError) {
-                throw new Error(error.errors[0].message)
-            }
-
-            throw error
+            this.handleValidationError(error)
         }
     }
 
@@ -98,11 +90,7 @@ class DevicesService {
             return await devicesModel.updateDeviceLastAccessedAt(parseData)
 
         } catch (error: any) {
-            if (error instanceof z.ZodError) {
-                throw new Error(error.errors[0].message)
-            }
-
-            throw error
+            this.handleValidationError(error)
         }
     }
 
@@ -112,11 +100,7 @@ class DevicesService {
             return await devicesModel.deleteDevice(parseData)
 
         } catch (error: any) {
-            if (error instanceof z.ZodError) {
-                throw new Error(error.errors[0].message)
-            }
-
-            throw error
+            this.handleValidationError(error)
         }
     }
 }

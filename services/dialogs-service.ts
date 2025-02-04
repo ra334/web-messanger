@@ -44,18 +44,21 @@ const updateLastMessageSchema = z.object({
 })
 
 class DialogsService {
+    private handleValidationError(error: unknown): never {
+        if (error instanceof z.ZodError) {
+            throw new Error(error.errors[0].message)
+        }
+
+        throw error
+    }
+
     async createDialog(data: CreateDialog): Promise<Dialog> {
         try {
             const parseData = createDialogSchema.parse(data)
             return await dialogsModel.createDialog(parseData)
 
         } catch (error: any) {
-
-            if (error instanceof z.ZodError) {
-                throw new Error(error.errors[0].message)
-            }
-
-            throw error
+            this.handleValidationError(error)
         }
     }
 
@@ -65,11 +68,7 @@ class DialogsService {
             return await dialogsModel.getDialog(parseData)
 
         } catch (error: any) {
-            if (error instanceof z.ZodError) {
-                throw new Error(error.errors[0].message)
-            }
-
-            throw error
+            this.handleValidationError(error)
         }
     }
 
@@ -79,11 +78,7 @@ class DialogsService {
             return await dialogsModel.getDialogsByUser(parseData)
 
         } catch (error: any) {
-            if (error instanceof z.ZodError) {
-                throw new Error(error.errors[0].message)
-            }
-
-            throw error
+            this.handleValidationError(error)
         }
     }
 
@@ -93,11 +88,7 @@ class DialogsService {
             return await dialogsModel.updateIsDeletedForSender(parseData)
 
         } catch (error: any) {
-            if (error instanceof z.ZodError) {
-                throw new Error(error.errors[0].message)
-            }
-
-            throw error
+            this.handleValidationError(error)
         }
     }
 
@@ -107,11 +98,7 @@ class DialogsService {
             return await dialogsModel.updateIsDeletedForReceiver(parseData)
 
         } catch (error: any) {
-            if (error instanceof z.ZodError) {
-                throw new Error(error.errors[0].message)
-            }
-
-            throw error
+            this.handleValidationError(error)
         }
     }
 
@@ -121,11 +108,7 @@ class DialogsService {
             return await dialogsModel.updateLastMessage(parseData)
 
         } catch (error: any) {
-            if (error instanceof z.ZodError) {
-                throw new Error(error.errors[0].message)
-            }
-
-            throw error
+            this.handleValidationError(error)
         }
     }
 
@@ -135,11 +118,7 @@ class DialogsService {
             return await dialogsModel.deleteDialog(parseData)
 
         } catch (error: any) {
-            if (error instanceof z.ZodError) {
-                throw new Error(error.errors[0].message)
-            }
-
-            throw error
+            this.handleValidationError(error)
         }
     }
 }
