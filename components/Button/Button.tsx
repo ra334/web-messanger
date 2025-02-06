@@ -1,11 +1,12 @@
 interface ButtonProps {
-    children: React.ReactNode;
+    children?: React.ReactNode;
     onClick?: () => void;
+    className?: string;
 }
 
-function Button({children, onClick}: ButtonProps) {
+function Button({children, onClick, className}: ButtonProps) {
     return (
-        <button className="
+        <button className={`
             w-full
             text-center
             border-2
@@ -14,7 +15,8 @@ function Button({children, onClick}: ButtonProps) {
             font-normal
             text-xl
             py-2
-        " onClick={onClick}>
+            ${className}
+        `} onClick={onClick}>
             {children}
         </button>
     )
