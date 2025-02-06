@@ -22,3 +22,14 @@ body {
 .button-blueout {
     background: radial-gradient(circle, #FFFFFF 56%, #3CC2EE 100%);
 }
+
+.line {
+    height: 1px;
+    width: 100%;
+    max-width: 345px;
+    background-color: black;
+}
+
+.auth-title {
+    font-size: 3.125rem;
+}
