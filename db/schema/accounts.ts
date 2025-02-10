@@ -2,8 +2,8 @@ import {pgTable, text, integer, primaryKey, uuid } from "drizzle-orm/pg-core";
 import { users } from './users'
 import type { AdapterAccountType } from "next-auth/adapters"
 
-export const accounts = pgTable("accounts", {
-    userId: uuid('user_id').notNull().references(() => users.id),
+export const accounts = pgTable("account", {
+    userId: uuid('userId').notNull().references(() => users.id),
     type: text("type").$type<AdapterAccountType>().notNull(),
     provider: text("provider").notNull(),
     providerAccountId: text("providerAccountId").notNull(),
