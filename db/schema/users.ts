@@ -9,9 +9,9 @@ export const users = pgTable("users", {
     password: text('password'),
     avatarURL: varchar('avatar_url', {length: 255}).notNull(),
     status: statusEnum().notNull().default('online'),
-    isVerified: boolean('is_verified').notNull().default(false),
+    emailVerified: timestamp("email_verified", { mode: "date" }),
     isReported: boolean('is_reported').notNull().default(false),
     isActive: boolean('is_active').notNull().default(true),
     isBlocked: boolean('is_blocked').notNull().default(false),
     createdAT: timestamp('created_at').notNull().defaultNow()
-});
+})
