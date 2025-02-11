@@ -1,33 +1,29 @@
 interface UserData {
     id: string;
-    nickName: string;
+    nickName: string | null;
+    name: string | null;
     email: string;
     password: string | null;
-    avatarURL: string;
-    status: 'offline' | 'online' | 'away';
-    isVerified: boolean;
-    isReported: boolean;
-    isActive: boolean;
-    isBlocked: boolean;
-    createdAT: Date;
+    image: string | null;
+    status: 'offline' | 'online' | 'away' | null;
+    emailVerified: Date | null;
+    isReported: boolean | null;
+    isActive: boolean | null;
+    isBlocked: boolean | null;
+    createdAT: Date | null;
 }
 
 interface CreateUser {
     nickName: string;
     email: string;
     password: string | null;
-    avatarURL: string;
+    image: string;
 }
 
-interface LoginUserWithCredentials {
+interface LoginUser {
     nickName: string | null
     email: string | null
     password: string
-}
-
-interface LoginUserWithOauth {
-    nickName: string | null
-    email: string | null
 }
 
 interface GetUser {
@@ -42,8 +38,8 @@ interface GetUserByNickname {
     nickName: string;
 }
 
-interface ReturnUserAvatarURL {
-    avatarURL: string;
+interface ReturnUserImage {
+    image: string | null;
 }
 
 interface UpdateUserNickname {
@@ -61,19 +57,14 @@ interface UpdateUserPassword {
     password: string;
 }
 
-interface UpdateUserAvatarURL {
+interface UpdateUserImage {
     id: string;
-    avatarURL: string;
+    image: string;
 }
 
 interface UpdateUserStatus {
     id: string;
     status: "offline" | "online" | "away";
-}
-
-interface UpdateUserIsVerified {
-    id: string;
-    isVerified: boolean;
 }
 
 interface UpdateUserIsReported {
@@ -101,13 +92,12 @@ export {
     GetUser,
     GetUserByEmail,
     GetUserByNickname,
-    ReturnUserAvatarURL,
+    ReturnUserImage,
     UpdateUserNickname,
     UpdateUserEmail,
     UpdateUserPassword,
-    UpdateUserAvatarURL,
+    UpdateUserImage,
     UpdateUserStatus,
-    UpdateUserIsVerified,
     UpdateUserIsReported,
     UpdateUserIsActive,
     UpdateUserIsBlocked,

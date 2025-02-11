@@ -8,13 +8,12 @@ import {
     GetUser,
     GetUserByEmail,
     GetUserByNickname,
-    ReturnUserAvatarURL,
+    ReturnUserImage,
     UpdateUserNickname,
     UpdateUserEmail,
     UpdateUserPassword,
-    UpdateUserAvatarURL,
+    UpdateUserImage,
     UpdateUserStatus,
-    UpdateUserIsVerified,
     UpdateUserIsReported,
     UpdateUserIsActive,
     UpdateUserIsBlocked,
@@ -38,15 +37,15 @@ const passwordSchema = z.object({
     password: z.string().min(8)
 })
 
-const avatarURLSchema = z.object({
-    avatarURL: z.string().max(255)
+const imageSchema = z.object({
+    image: z.string().max(255)
 })
 
 const registerUserSchema = z.object({
     ...nickNameSchema.shape,
     ...emailSchema.shape,
     password: z.string().min(8).nullable(),
-    ...avatarURLSchema.shape
+    ...imageSchema.shape
 })
 
 const loginWithCredentialsSchema = z.object({
@@ -70,19 +69,14 @@ const updateUserPasswordSchema = z.object({
     ...passwordSchema.shape
 })
 
-const updateUserAvatarURLSchema = z.object({
+const updateUserImageSchema = z.object({
     ...idSchema.shape,
-    ...avatarURLSchema.shape
+    ...imageSchema.shape
 })
 
 const updateUserStatusSchema = z.object({
     ...idSchema.shape,
     status: z.enum(['offline', 'online', 'away'])
-})
-
-const updateUserIsVerifiedSchema = z.object({
-    ...idSchema.shape,
-    isVerified: z.boolean()
 })
 
 const updateUserIsReportedSchema = z.object({
@@ -109,13 +103,22 @@ class UsersService {
         throw error
     }
 
-    async registerUser(data: CreateUser): Promise<UserData> {
+    async registerUser({nickName, email, password, image}: CreateUser): Promise<UserData> {
         try {
             const saltRounds = Number(process.env.SALT_ROUNDS)
-            const parseData = registerUserSchema.parse(data)
+            const parseData = await registerUserSchema.parseAsync({
+                nickName,
+                email,
+                password,
+                image
+            })
+
+            if (!password) {
+                throw new Error("Password is required");
+            }
         
-            const passwordHah = data.password 
-                ? await bcrypt.hash(data.password, saltRounds)
+            const passwordHah = password
+                ? await bcrypt.hash(password, saltRounds)
                 : null
 
             return await usersModel.createUser({
@@ -172,10 +175,10 @@ class UsersService {
         }
     }
 
-    async getUserAvatarURL(data: GetUser): Promise<ReturnUserAvatarURL> {
+    async getUserImage(data: GetUser): Promise<ReturnUserImage> {
         try {
             const parseData = idSchema.parse(data)
-            return await usersModel.getUserAvatarURL(parseData)
+            return await usersModel.getUserImage(parseData)
         } catch (error) {
             this.handleValidationError(error)
         }
@@ -232,9 +235,9 @@ class UsersService {
         }
     }
 
-    async updateUserAvatarURL(data: UpdateUserAvatarURL): Promise<UserData> {
+    async updateUserAvatarURL(data: UpdateUserImage): Promise<UserData> {
         try {
-            const parseData = updateUserAvatarURLSchema.parse(data)
+            const parseData = updateUserImageSchema.parse(data)
             return await usersModel.updateUserAvatarURL(parseData)
         } catch (error) {
             this.handleValidationError(error)
@@ -245,15 +248,6 @@ class UsersService {
         try {
             const parseData = updateUserStatusSchema.parse(data)
             return await usersModel.updateUserStatus(parseData)
-        } catch (error) {
-            this.handleValidationError(error)
-        }
-    }
-
-    async updateUserIsVerified(data: UpdateUserIsVerified): Promise<UserData> {
-        try {
-            const parseData = updateUserIsVerifiedSchema.parse(data)
-            return await usersModel.updateUserIsVerified(parseData)
         } catch (error) {
             this.handleValidationError(error)
         }

@@ -7,13 +7,12 @@ import type {
     GetUser,
     GetUserByEmail,
     GetUserByNickname,
-    ReturnUserAvatarURL,
+    ReturnUserImage,
     UpdateUserNickname,
     UpdateUserEmail,
     UpdateUserPassword,
-    UpdateUserAvatarURL,
     UpdateUserStatus,
-    UpdateUserIsVerified,
+    UpdateUserImage,
     UpdateUserIsReported,
     UpdateUserIsActive,
     UpdateUserIsBlocked,
@@ -30,7 +29,7 @@ class UsersModel {
                 nickName: data.nickName,
                 email: data.email,
                 password: data.password,
-                avatarURL: data.avatarURL,
+                image: data.image,
             }).returning()
 
             return newUser[0]
@@ -60,19 +59,19 @@ class UsersModel {
         return user;
     }
 
-    async getUserAvatarURL(data: GetUser): Promise<ReturnUserAvatarURL> {
-        const avatarURL = await db.query.users.findFirst({
+    async getUserImage(data: GetUser): Promise<ReturnUserImage> {
+        const image = await db.query.users.findFirst({
             where: (users, { eq }) => eq(users.id, data.id),
             columns: {
-                avatarURL: true
+                image: true
             }
         })
 
-        if (!avatarURL) {
+        if (!image) {
             throw new Error('User not found');
         }
 
-        return avatarURL
+        return image
     }
 
     async getUserByEmail(data: GetUserByEmail): Promise<UserData> {
@@ -143,10 +142,10 @@ class UsersModel {
         return updatedUser[0]
     }
 
-    async updateUserAvatarURL(data: UpdateUserAvatarURL): Promise<UserData> {
+    async updateUserAvatarURL(data: UpdateUserImage): Promise<UserData> {
         const updatedUser = await db
             .update(users)
-            .set({avatarURL: data.avatarURL})
+            .set({image: data.image})
             .where(eq(users.id, data.id))
             .returning()
 
@@ -161,20 +160,6 @@ class UsersModel {
         const updatedUser = await db
             .update(users)
             .set({status: data.status})
-            .where(eq(users.id, data.id))
-            .returning()
-
-        if (!updatedUser[0]) {
-            throw new Error('User not found');
-        }
-
-        return updatedUser[0]
-    }
-
-    async updateUserIsVerified(data: UpdateUserIsVerified): Promise<UserData> {
-        const updatedUser = await db
-            .update(users)
-            .set({isVerified: data.isVerified})
             .where(eq(users.id, data.id))
             .returning()
 
