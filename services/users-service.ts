@@ -131,7 +131,7 @@ class UsersService {
         }
     }
 
-    async loginWithCredentials(data: LoginUser) {
+    async login(data: LoginUser) {
         try {
             const parseData = loginWithCredentialsSchema.parse(data)
             let user: UserData | null = null
