@@ -21,7 +21,7 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { z } from "zod"
 import { useForm } from "react-hook-form"
 import Image from "next/image"
-import GoogleIcon from "@/app/assets/google.svg"
+import GoogleIcon from "@/assets/google.svg"
 
 const formSchema = z.object({
     nickname: z.string().min(1, {
