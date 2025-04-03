@@ -28,8 +28,7 @@ class UsersModel {
             const newUser = await db.insert(users).values({
                 nickName: data.nickName,
                 email: data.email,
-                password: data.password,
-                image: data.image,
+                password: data.password
             }).returning()
 
             return newUser[0]

@@ -45,7 +45,6 @@ const registerUserSchema = z.object({
     ...nickNameSchema.shape,
     ...emailSchema.shape,
     password: z.string().min(8).nullable(),
-    ...imageSchema.shape
 })
 
 const loginWithCredentialsSchema = z.object({
@@ -103,14 +102,13 @@ class UsersService {
         throw error
     }
 
-    async registerUser({nickName, email, password, image}: CreateUser): Promise<UserData> {
+    async registerUser({nickName, email, password}: CreateUser): Promise<UserData> {
         try {
             const saltRounds = Number(process.env.SALT_ROUNDS)
             const parseData = await registerUserSchema.parseAsync({
                 nickName,
                 email,
                 password,
-                image
             })
 
             if (!password) {

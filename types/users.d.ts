@@ -17,7 +17,6 @@ interface CreateUser {
     nickName: string;
     email: string;
     password: string | null;
-    image: string;
 }
 
 interface LoginUser {

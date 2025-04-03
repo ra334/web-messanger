@@ -6,8 +6,7 @@ export async function POST(req: Request) {
     const user = await usersService.registerUser({
         nickName,
         email,
-        password,
-        avatarURL: 'https://google.com'
+        password
     })
 
     return NextResponse.json(
