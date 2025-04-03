@@ -21,28 +21,31 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { z } from "zod"
 import { useForm } from "react-hook-form"
 import Image from "next/image"
+import Link from "next/link"
 import GoogleIcon from "@/assets/google.svg"
 
-const formSchema = z.object({
-    nickname: z.string().min(1, {
-        message: "Nickname must be at least 1 character long",
-    }),
+const formSchema = z
+    .object({
+        nickname: z.string().min(1, {
+            message: "Nickname must be at least 1 character long",
+        }),
 
-    email: z.string().email({
-        message: "Invalid email address",
-    }),
+        email: z.string().email({
+            message: "Invalid email address",
+        }),
 
-    password1: z.string().min(6, {
-        message: "Password must be at least 6 characters long",
-    }),
+        password1: z.string().min(6, {
+            message: "Password must be at least 6 characters long",
+        }),
 
-    password2: z.string().min(6, {
-        message: "Password must be at least 6 characters long",
+        password2: z.string().min(6, {
+            message: "Password must be at least 6 characters long",
+        }),
     })
-}).refine(data => data.password1 === data.password2, {
-    message: "Passwords do not match",
-    path: ["password2"],
-})
+    .refine((data) => data.password1 === data.password2, {
+        message: "Passwords do not match",
+        path: ["password2"],
+    })
 
 function Login() {
     const form = useForm<z.infer<typeof formSchema>>({
@@ -69,7 +72,7 @@ function Login() {
                         </CardHeader>
                         <CardContent>
                             <div className="flex flex-col gap-4">
-                            <FormField
+                                <FormField
                                     control={form.control}
                                     name="nickname"
                                     render={({ field }) => (
@@ -126,7 +129,9 @@ function Login() {
                                     name="password2"
                                     render={({ field }) => (
                                         <FormItem>
-                                            <FormLabel>Repeat password</FormLabel>
+                                            <FormLabel>
+                                                Repeat password
+                                            </FormLabel>
                                             <FormControl>
                                                 <Input
                                                     autoComplete="new-password"
@@ -165,12 +170,14 @@ function Login() {
                                 <div className="w-full text-center">
                                     <span>
                                         Already have an account?
-                                        <Button
-                                            variant="link"
-                                            className="p-0 pl-1 underline h-auto"
-                                        >
-                                            Login
-                                        </Button>
+                                        <Link href={"/login"}>
+                                            <Button
+                                                variant="link"
+                                                className="p-0 pl-1 underline h-auto"
+                                            >
+                                                Login
+                                            </Button>
+                                        </Link>
                                     </span>
                                 </div>
                             </div>

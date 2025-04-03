@@ -21,6 +21,7 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { z } from "zod"
 import { useForm } from "react-hook-form"
 import Image from "next/image"
+import Link from "next/link"
 import GoogleIcon from "@/assets/google.svg"
 
 const formSchema = z.object({
@@ -117,12 +118,14 @@ function Login() {
                                 <div className="w-full text-center">
                                     <span>
                                         Don't have an account?
-                                        <Button
-                                            variant="link"
-                                            className="p-0 pl-1 underline h-auto"
-                                        >
-                                            Sign up
-                                        </Button>
+                                        <Link href={"/signup"}>
+                                            <Button
+                                                variant="link"
+                                                className="p-0 pl-1 underline h-auto"
+                                            >
+                                                Sign up
+                                            </Button>
+                                        </Link>
                                     </span>
                                 </div>
                             </div>
