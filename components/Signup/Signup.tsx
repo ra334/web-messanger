@@ -23,6 +23,7 @@ import { useForm } from "react-hook-form"
 import Image from "next/image"
 import Link from "next/link"
 import GoogleIcon from "@/assets/google.svg"
+import { signIn } from "next-auth/react"
 
 const formSchema = z
     .object({
@@ -52,14 +53,36 @@ function Login() {
         resolver: zodResolver(formSchema),
         defaultValues: {
             email: "",
+            nickname: "",
             password1: "",
             password2: "",
         },
     })
 
-    function onSubmit(values: z.infer<typeof formSchema>) {
-        console.log(values)
-        console.log("Login")
+    async function onSubmit(values: z.infer<typeof formSchema>) {
+        const data = {
+            nickName: values.nickname,
+            email: values.email,
+            password: values.password1,
+        }
+
+        const response = await fetch('/api/auth/signup', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(data),
+        })
+
+        if (!response.ok) return;
+
+        const result = await signIn('credentials', {
+            email: values.email,
+            password: values.password1,
+            redirect: false,
+        })
+
+        console.log(result)
     }
 
     return (
